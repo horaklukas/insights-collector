@@ -1,14 +1,22 @@
+
+import WebReport
 import Html exposing (..)
-import Html.App as Html
+import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Http
-import Json.Decode as Json
 import Task
-import Array
+import WebReport
+
+defaultWebpages: List String
+defaultWebpages =
+    [
+      "autovrakoviste-dipa.cz",
+      "motoservisjelinek.cz",
+      "fbctremosnice.4fan.cz"
+    ]
 
 main =
-  Html.program {
+  App.program {
     init = init ,
     update = update,
     subscriptions = subscriptions,
@@ -17,103 +25,55 @@ main =
 
 -- MODEL
 
-type Status = Waiting | Fetched | Error String
-
 type alias Model =
   {
-    status: Status,
-    insights: List Insight
+    reports : List Report,
+    uid : Int
   }
 
-type alias Insight =
+
+type alias Report =
   {
-    webpage: String,
-    score: Float
+    id : Int,
+    model : WebReport.Model
   }
 
--- INIT
+  -- INIT
 
-defaultWebpages: Array.Array String
-defaultWebpages =
-  Array.fromList
-    [
-      "autovrakoviste-dipa.cz",
-      "motoservisjelinek.cz",
-      "fbctremosnice.4fan.cz"
-    ]
-
-init : (Model, Cmd Msg)
+init : ( Model, Cmd Msg )
 init =
-  (Model Waiting [], fetchInsight "autovrakoviste-dipa.cz")
+  ( Model [] 0, loadDefaults )
 
 -- UPDATE
 
-type Msg = --FetchInsights
-  FetchInsightsSucceed String Float
-  | FetchInsightsFail Http.Error
+type Msg = AddWebpage String
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update action {insights} =
-  case action of
-    --FetchInsights ->
-    --  (Model "" insights, fetchInsight "autovrakoviste-dipa.cz")
+update msg ({reports, uid} as model) =
+  case msg of
+    AddWebpage web ->
+      ({
+        model | reports = reports ++ [ Report uid (WebReport.init web) ],
+        uid = uid + 1
+      }, Cmd.none)
 
-    FetchInsightsSucceed webname score ->
-      (Model Fetched ( (Insight webname score) :: insights), Cmd.none)
-
-    FetchInsightsFail err ->
-      (Model (Error (errorMapper err)) insights, Cmd.none)
-
-fetchInsight : String -> Cmd Msg
-fetchInsight webname =
-  let
-    url = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=http%3A%2F%2F" ++ webname
-    succededCallback = FetchInsightsSucceed webname
-  in
-    Task.perform FetchInsightsFail succededCallback (Http.get decodeInsight url)
-
-decodeInsight: Json.Decoder Float
-decodeInsight =
-  Json.at ["ruleGroups", "SPEED", "score"] Json.float
-
-errorMapper : Http.Error -> String
-errorMapper err =
-    case err of
-      Http.UnexpectedPayload s -> "Payload" ++ s
-      otherwise -> "http error"
+loadDefaults: Cmd Msg
+loadDefaults =
+  Cmd.map AddWebpage defaultWebpages
 
 -- VIEW
 
-view: Model -> Html Msg
-view {status, insights} =
+view : Model -> Html Msg
+view model =
   div []
     [
-      statusView status,
-      insightsListView insights
+      --button [onClick loadDefaults] [],
+      div [] (List.map viewReport model.reports)
     ]
 
-statusView: Status -> Html Msg
-statusView status =
-  let
-    message =
-      case status of
-        Waiting -> "Waiting for results"
-        Fetched -> "Results fetched"
-        Error err -> "Error:" ++ err
-  in
-    span [] [text message ]
-
-insightsListView: List Insight -> Html msg
-insightsListView insights =
-  div [] (List.map insightView insights)
-
-insightView: Insight -> Html msg
-insightView insight =
-  div []
-    [
-      span [] [ text (insight.webpage ++ " : ") ],
-      strong [] [ text ( toString(insight.score) ++ "%" ) ]
-    ]
+viewReport : Report -> Html Msg
+viewReport {id, model} =
+  WebReport.view model
 
 -- SUBSCRIPTIONS
 
