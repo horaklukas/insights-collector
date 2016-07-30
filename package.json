@@ -1,10 +1,11 @@
 {
   "name": "insights-collector",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
     "start": "",
+    "api": "node api.js",
     "build": "webpack",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --port 3000",
@@ -24,5 +25,8 @@
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "json-server": "^0.8.17"
   }
 }

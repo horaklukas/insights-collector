@@ -1,8 +1,10 @@
-module App.Models exposing (ReportId, Report, Model, initialModel)
+module App.Models exposing (ReportId, WebUrl, Report, Model, initialModel)
 
 import WebReport.Models as ReportModel
 
 type alias ReportId = String
+
+type alias WebUrl = String
 
 type alias Report = {
   id: ReportId,

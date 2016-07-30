@@ -1,8 +1,11 @@
 module App.Messages exposing (AppMsg, AppMsg (..))
 
-import App.Models exposing (ReportId)
+import Http
+
+import App.Models exposing (ReportId, WebUrl)
 import WebReport.Messages as ReportMsg
 
 type AppMsg =
-  FetchAll (List String) |
+  FetchWebpagesFail Http.Error |
+  FetchReports (List WebUrl) |
   WebReportMsg ReportId ReportMsg.Msg

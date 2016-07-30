@@ -5,6 +5,7 @@ import Html.App as App
 
 import App.Models exposing (Report, Model, initialModel)
 import App.Messages exposing (AppMsg)
+import App.Commands exposing (fetchWebpages)
 import App.Update exposing (update)
 import App.View exposing (view)
 
@@ -14,8 +15,7 @@ init : ( Model, Cmd AppMsg )
 init =
   (
     initialModel,
-    Cmd.none
-    -- TODO: Get webpages from server
+    fetchWebpages
   )
 
 -- SUBSCRIPTIONS

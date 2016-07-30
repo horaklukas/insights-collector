@@ -10,19 +10,10 @@ import App.Messages exposing (AppMsg (..))
 import WebReport.View as ReportView
 import WebReport.Messages exposing (Msg)
 
-defaultWebpages: List String
-defaultWebpages =
-    [
-      "autovrakoviste-dipa.cz",
-      "motoservisjelinek.cz",
-      "fbctremosnice.4fan.cz"
-    ]
-
 view : Model -> Html AppMsg
 view model =
   div []
     [
-      button [onClick (FetchAll defaultWebpages)] [text "Get it all"],
       div [] (List.map viewReport model.reports)
     ]
 

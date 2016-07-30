@@ -9,10 +9,13 @@ import WebReport.Update as ReportUpdate
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
   case msg of
-    FetchAll reports ->
+    FetchWebpagesFail error ->
+      (model, Cmd.none)
+
+    FetchReports webpages ->
       let
         (newReports, cmds) =
-          List.unzip (List.map initReport reports)
+          List.unzip (List.map initReport webpages)
       in
         (
           { model | reports = newReports },
