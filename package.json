@@ -1,6 +1,6 @@
 {
-  "name": "web-power-inspector",
-  "version": "0.1.0",
+  "name": "insights-collector",
+  "version": "0.2.0",
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
