@@ -4,7 +4,10 @@
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
-    "start": "elm reactor",
+    "start": "",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "dev": "webpack-dev-server --port 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,5 +15,14 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/horaklukas/web-power-inspector.git"
+  },
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "elm-webpack-loader": "^3.0.3",
+    "file-loader": "^0.9.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-dev-server": "^1.14.1"
   }
 }
