@@ -4,7 +4,7 @@
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
-    "start": "",
+    "start": "npm run api",
     "api": "node api.js",
     "build": "webpack",
     "watch": "webpack --watch",
@@ -21,12 +21,17 @@
     "css-loader": "^0.23.1",
     "elm-webpack-loader": "^3.0.3",
     "file-loader": "^0.9.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "ace-css": "^1.1.0",
+    "bootstrap": "^3.3.7",
     "json-server": "^0.8.17"
   }
 }

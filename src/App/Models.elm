@@ -1,23 +1,13 @@
-module App.Models exposing (ReportId, WebUrl, Report, Model, initialModel)
+module App.Models exposing (Model, initialModel)
 
-import WebReport.Models as ReportModel
-
-type alias ReportId = String
-
-type alias WebUrl = String
-
-type alias Report = {
-  id: ReportId,
-  model: ReportModel.Model
-}
+import WebReport.Models exposing (Report, ReportId)
 
 type alias Model =
   {
-    reports : List Report
+    reports: List Report,
+    selected: ReportId
   }
 
 initialModel: Model
 initialModel =
-  {
-    reports = []
-  }
+  Model [] ""

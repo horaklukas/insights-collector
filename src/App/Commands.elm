@@ -5,7 +5,7 @@ import Json.Decode as Json
 import Task
 
 import App.Messages exposing (AppMsg (..))
-import App.Models exposing (WebUrl)
+import WebReport.Models exposing (WebUrl)
 
 dbUrl: String
 dbUrl = "http://localhost:4000"

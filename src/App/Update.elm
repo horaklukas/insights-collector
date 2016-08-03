@@ -1,10 +1,12 @@
 module App.Update exposing (update)
 
 import App.Messages exposing (AppMsg (..))
-import App.Models exposing (ReportId, Report, Model)
+import App.Models exposing (Model)
+
 import WebReport.Main as ReportMain
 import WebReport.Messages as ReportMsg
 import WebReport.Update as ReportUpdate
+import WebReport.Models exposing (ReportId, Report, WebUrl)
 
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
@@ -32,16 +34,17 @@ update msg model =
           Cmd.batch cmds
         )
 
-initReport: String -> (Report, Cmd AppMsg)
+    SelectReport reportId ->
+      ({ model | selected = reportId }, Cmd.none)
+
+initReport: WebUrl -> (Report, Cmd AppMsg)
 initReport web =
   let
-    (newReport, cmds) = ReportMain.init web
-    id = web
-    report = Report id newReport
+    (report, cmds) = ReportMain.init web
   in
     (
       report,
-      Cmd.map (WebReportMsg id) cmds
+      Cmd.map (WebReportMsg report.id) cmds
     )
 
 updateReport : ReportId -> ReportMsg.Msg -> Report -> ( Report, Cmd AppMsg )
@@ -51,9 +54,9 @@ updateReport id msg report =
 
   else
     let
-      ( newReport, cmds ) = ReportUpdate.update msg report.model
+      ( newReport, cmds ) = ReportUpdate.update msg report
     in
       (
-        { report | model = newReport},
+        newReport,
         Cmd.map (WebReportMsg id) cmds
-  )
+      )

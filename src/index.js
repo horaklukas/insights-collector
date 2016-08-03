@@ -1,5 +1,7 @@
 'use strict';
 
+require('./less/main.less');
+
 // force copying to dist
 require('./index.html');
 

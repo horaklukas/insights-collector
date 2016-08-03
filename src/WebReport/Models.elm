@@ -1,10 +1,15 @@
-module WebReport.Models exposing (Model, Status (..))
+module WebReport.Models exposing (ReportId, WebUrl, Report, Status (..))
+
+type alias ReportId = String
+
+type alias WebUrl = String
 
 type Status = Fetching | Fetched | Error String
 
-type alias Model =
+type alias Report =
   {
-    webpage: String,
+    id: ReportId,
+    webpage: WebUrl,
     status: Status,
     score: Float
   }
