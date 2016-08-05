@@ -7,14 +7,14 @@ import WebReport.Commands exposing (getInsightReport, errorMapper)
 update : Msg -> Report -> (Report, Cmd Msg)
 update action report =
   let
-    {webpage, status, score} = report
+    {webpage, status, data} = report
   in
     case action of
       Fetch ->
-        ({ report | score = score, status = Fetching }, getInsightReport webpage)
+        ({ report | data = data, status = Fetching }, getInsightReport webpage)
 
-      FetchInsightSucceed webname score ->
-        ({ report | score = score, status = Fetched }, Cmd.none)
+      FetchInsightSucceed webname data ->
+        ({ report | data = data, status = Fetched }, Cmd.none)
 
       FetchInsightFail err ->
-        ({ report | score = score, status = (Error (errorMapper err)) }, Cmd.none)
+        ({ report | data = data, status = (Error (errorMapper err)) }, Cmd.none)

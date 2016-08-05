@@ -57,6 +57,11 @@
   .list-group-item {
     cursor: pointer;
 
+    &.active {
+      border-color: lighten(@gray-light, 10%);
+      background-color: lighten(@gray-light, 20%);
+    }
+
     .score {
       display: inline-block;
       padding: 2px 4px;
