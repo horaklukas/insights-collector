@@ -1,4 +1,4 @@
-module WebReport.Models exposing (ReportId, WebUrl, Report, Status (..), ReportData, PageStats, initialData)
+module WebReport.Models exposing (..)
 
 type alias ReportId = String
 
@@ -15,14 +15,15 @@ type alias Report = {
 
 type alias ReportData = {
   score: Float,
-  pageStats: PageStats
+  pageStats: PageStats,
+  screenshot: Screenshot
 }
 
 type alias PageStats = {
   cssResponseBytes: String, -- "51444"
   htmlResponseBytes: String, -- "3615"
   imageResponseBytes: String, -- "32818"
-  javascriptResponseBytes: String, -- "135879"
+  jsResponseBytes: String, -- "135879"
   numberCssResources: Int, -- 4
   --numberHosts: Int, -- 2
   numberJsResources: Int -- 2
@@ -32,6 +33,13 @@ type alias PageStats = {
   --totalRequestBytes: String -- "1157"
 }
 
+type alias Screenshot = {
+  data: String,
+  width: Int,
+  height: Int,
+  mime: String
+}
+
 initialData: ReportData
 initialData =
-  ReportData 0 (PageStats "" "" "" "" 0 0)
+  ReportData 0 (PageStats "" "" "" "" 0 0) (Screenshot "" 0 0 "")

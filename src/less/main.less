@@ -97,4 +97,37 @@
   left: @listWidth;
   right: 0;
   border-left: 0;
+
+  .screenshot {
+    text-align: center;
+
+    &.ntb {
+      width: 380px;
+      height: 240px;
+      background: url('../img/mockup-ntb.svg') no-repeat;
+      background-size: 380px 240px;
+    }
+
+    .web-preview {
+      display: inline-block;
+      height: 162px;
+      margin-top: 30px;
+      overflow: hidden;
+
+      img {
+        width: 262px;
+        height: 195px;
+      }
+    }
+  }
+
+  .stats {
+    margin-top: 30px;
+    li {
+      padding: 7px 10px;
+      list-style-type: none;
+      font-size: 1.1em;
+      border-bottom: 1px solid @list-group-border;
+    }
+  }
 }
