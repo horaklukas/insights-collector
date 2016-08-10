@@ -2,6 +2,9 @@ module WebReport.Messages exposing (Msg (..))
 
 import Http
 
+import WebReport.Models exposing (ReportData, RuleId)
+
 type Msg = Fetch
-  | FetchInsightSucceed String Float
+  | FetchInsightSucceed String ReportData
   | FetchInsightFail Http.Error
+  | SelectRule RuleId

@@ -21,13 +21,13 @@ view report =
       ]
 
 getScore: Report -> (ScoreClassName, ScoreStatus)
-getScore {score, status} =
+getScore {data, status} =
   case status of
     Fetching ->
         ("info", "Loading report...")
 
     Fetched ->
-      (getClassNameByScore score, toString(score) ++ "%" )
+      (getClassNameByScore data.score, toString(data.score) ++ "%" )
 
     Error errMessage ->
       ("error", "Error at report loading" ++ errMessage)

@@ -1,6 +1,6 @@
 {
   "name": "insights-collector",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
