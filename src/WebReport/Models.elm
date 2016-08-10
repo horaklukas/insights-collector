@@ -10,13 +10,15 @@ type alias Report = {
   id: ReportId,
   webpage: WebUrl,
   status: Status,
-  data: ReportData
+  data: ReportData,
+  activeRule: RuleId
 }
 
 type alias ReportData = {
   score: Float,
   pageStats: PageStats,
-  screenshot: Screenshot
+  screenshot: Screenshot,
+  rules: Rules
 }
 
 type alias PageStats = {
@@ -40,6 +42,27 @@ type alias Screenshot = {
   mime: String
 }
 
+type alias Rules = List (RuleId, Rule)
+
+type alias RuleId = String
+
+type alias Rule = {
+  name: String,
+  summary: RuleSummary,
+  impact: Float
+}
+
+type alias RuleSummary = {
+  format: String,
+  args: Maybe (List FormatArg)
+}
+
+type alias FormatArg = {
+  argType: String,
+  key: String,
+  value: String
+}
+
 initialData: ReportData
 initialData =
-  ReportData 0 (PageStats "" "" "" "" 0 0) (Screenshot "" 0 0 "")
+  ReportData 0 (PageStats "" "" "" "" 0 0) (Screenshot "" 0 0 "") []

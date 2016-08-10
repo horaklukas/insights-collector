@@ -5,7 +5,7 @@ import Json.Decode as Json exposing ((:=))
 import Task
 
 import WebReport.Messages exposing (Msg (..))
-import WebReport.Models exposing (ReportData, PageStats, Screenshot)
+import WebReport.Models exposing (..)
 
 baseUrl: String
 baseUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=http%3A%2F%2F"
@@ -20,10 +20,11 @@ getInsightReport webname =
 
 decodeReport: Json.Decoder ReportData
 decodeReport =
-  Json.object3 ReportData
+  Json.object4 ReportData
     decodeScore
     (Json.at ["pageStats"] decodeStats)
     (Json.at ["screenshot"] decodeScreenshot)
+    (Json.at ["formattedResults", "ruleResults"] decodeRules)
 
 
 decodeScore: Json.Decoder Float
@@ -52,6 +53,32 @@ decodeScreenshot =
     ("width" := Json.int)
     ("height" := Json.int)
     ("mime_type" := Json.string)
+
+decodeRules: Json.Decoder Rules
+decodeRules =
+  Json.keyValuePairs decodeRule
+  --Json.keyValuePairs Rule
+  -- ("summary" := Json.string)
+
+decodeRule: Json.Decoder Rule
+decodeRule =
+  Json.object3 Rule
+    ("localizedRuleName" := Json.string)
+    (Json.at ["summary"] decodeSummary)
+    ("ruleImpact" := Json.float)
+
+decodeSummary: Json.Decoder RuleSummary
+decodeSummary =
+  Json.object2 RuleSummary
+    ("format" := Json.string)
+    (Json.maybe ("args" := Json.list decodeFormatArg))
+
+decodeFormatArg: Json.Decoder FormatArg
+decodeFormatArg =
+  Json.object3 FormatArg
+    ("type" := Json.string)
+    ("key" := Json.string)
+    ("value" := Json.string)
 
 errorMapper: Http.Error -> String
 errorMapper err =

@@ -11,7 +11,7 @@ import WebReport.Update exposing (update)
 init: String -> (Report, Cmd Msg)
 init web =
   (
-    Report web web Fetching initialData,
+    Report web web Fetching initialData "",
     getInsightReport web
   )
 

@@ -130,4 +130,56 @@
       border-bottom: 1px solid @list-group-border;
     }
   }
+
+  .rules-heading {
+    padding: 0 5px;
+    font-weight: bold;
+
+    span {
+      float: right;
+    }
+  }
+
+  .rules {
+    .rule {
+      margin-bottom: 0;
+      border-bottom: 0;
+
+      &:last-child {
+        border-bottom: 1px solid @panel-default-border;
+      }
+
+      &.expanded {
+        color: black;
+
+        .panel-heading {
+          cursor: default;
+          background-color: @gray-light;
+          color: white;
+          border-color: @gray;
+        }
+
+        .panel-body {
+          color: #333;
+        }
+      }
+
+      &.collapsed {
+        .panel-heading {
+          cursor: pointer;
+          border-bottom: none;
+        }
+
+        .panel-body {
+          .hidden;
+        }
+      }
+
+      .panel-title {
+        .badge {
+          float: right;
+        }
+      }
+    }
+  }
 }

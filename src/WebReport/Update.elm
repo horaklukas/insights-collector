@@ -7,7 +7,7 @@ import WebReport.Commands exposing (getInsightReport, errorMapper)
 update : Msg -> Report -> (Report, Cmd Msg)
 update action report =
   let
-    {webpage, status, data} = report
+    {webpage, status, data, activeRule} = report
   in
     case action of
       Fetch ->
@@ -18,3 +18,6 @@ update action report =
 
       FetchInsightFail err ->
         ({ report | data = data, status = (Error (errorMapper err)) }, Cmd.none)
+
+      SelectRule ruleId ->
+        ({ report | activeRule = ruleId }, Cmd.none)
