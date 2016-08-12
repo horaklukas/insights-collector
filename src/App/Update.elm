@@ -6,7 +6,7 @@ import App.Models exposing (Model)
 import WebReport.Main as ReportMain
 import WebReport.Messages as ReportMsg
 import WebReport.Update as ReportUpdate
-import WebReport.Models exposing (ReportId, Report, WebUrl)
+import WebReport.Models exposing (ReportId, Report, WebUrl, Status (Fetching))
 
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
@@ -35,7 +35,11 @@ update msg model =
         )
 
     SelectReport reportId ->
-      ({ model | selected = reportId }, Cmd.none)
+      (
+        if isReportFetching model.reports reportId then model
+        else { model | selected = reportId },
+        Cmd.none
+      )
 
 initReport: WebUrl -> (Report, Cmd AppMsg)
 initReport web =
@@ -60,3 +64,9 @@ updateReport id msg report =
         newReport,
         Cmd.map (WebReportMsg id) cmds
       )
+
+isReportFetching: List Report -> ReportId -> Bool
+isReportFetching reports reportId =
+  reports
+    |> List.filter (\report -> report.id == reportId)
+    |> List.any (\report -> report.status == Fetching)

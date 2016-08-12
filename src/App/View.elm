@@ -2,7 +2,7 @@ module App.View exposing (view)
 
 import Html exposing (Html, div, ul, li, button, text)
 import Html.App as App
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, classList)
 import Html.Events exposing (onClick)
 
 import App.Models exposing (Model)
@@ -10,7 +10,7 @@ import App.Messages exposing (AppMsg (..))
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Tab as ReportTab
 import WebReport.Detail as ReportDetail
-import WebReport.Models exposing (Report, ReportId)
+import WebReport.Models exposing (Report, ReportId, Status (Fetching))
 
 view : Model -> Html AppMsg
 view model =
@@ -29,11 +29,14 @@ websList {reports, selected} =
 
 viewReport: ReportId -> Report -> Html AppMsg
 viewReport selectedId model =
-
   let
-    itemClasses = if selectedId == model.id then "active " else ""
+    itemClasses = classList [
+      ("list-group-item", True),
+      ("active", selectedId == model.id),
+      ("disabled", model.status == Fetching)
+    ]
   in
-    li [class (itemClasses ++ "list-group-item"), onClick (SelectReport model.id)] [
+    li [itemClasses, onClick (SelectReport model.id)] [
       App.map (WebReportMsg model.id) (ReportTab.view model)
     ]
 
