@@ -1,13 +1,13 @@
 module WebReport.Detail exposing (view)
 
-import Html exposing (Html, div, ul, li, text, img, strong, h3, h4, p, span)
-import Html.Attributes exposing (class, src, width, height, style)
+import Html exposing (Html, div, ul, li, text, img, strong, h4, span)
+import Html.Attributes exposing (class, src, width, height)
 import Html.Events exposing (onClick)
 import String exposing (toInt, map)
-import Regex exposing (replace, regex, HowMany (..))
 
 import WebReport.Models exposing (..)
 import WebReport.Messages exposing (Msg (..))
+import WebReport.Rule
 
 view: Report -> Html Msg
 view report =
@@ -15,7 +15,7 @@ view report =
     sortedRules =
       report.data.rules
         |> List.sortWith sortRulesWithImpact
-        |> List.map (ruleView report.activeRule)
+        |> List.map (WebReport.Rule.view report.activeRule)
   in
     div [class "detail panel"] [
       div [class "panel-body grid"] [
@@ -89,34 +89,3 @@ fixScreenshotDataChar char =
   if char == '_' then '/'
   else if char == '-' then '+'
   else char
-
-ruleView: RuleId -> (RuleId, Rule) -> Html Msg
-ruleView activeRule (id, rule) =
-  let
-    activeClass = if activeRule == id then " expanded" else " collapsed"
-  in
-    div [class ("panel panel-default rule" ++ activeClass), onClick (SelectRule id)] [
-      div [class "panel-heading"] [
-        h4 [class "panel-title"] [
-          span [class "badge"] [text <| toString <| round rule.impact],
-          text rule.name
-        ]
-      ],
-      div [class "panel-body"] [text (makeRuleSummary rule.summary)]
-    ]
-
-makeRuleSummary: RuleSummary -> String
-makeRuleSummary summary =
-  case summary.args of
-    Just args ->
-      List.foldl fillFormatArg summary.format args
-
-    Nothing ->
-      summary.format
-
-fillFormatArg: FormatArg -> String -> String
-fillFormatArg {argType, key, value} format =
-  if argType == "HYPERLINK" then
-    replace All (regex "{{BEGIN_LINK}}|{{END_LINK}}") (\_ -> "") format
-  else
-    replace All (regex <| "{{" ++ key ++ "}}") (\_ -> value) format
