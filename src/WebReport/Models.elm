@@ -48,7 +48,8 @@ type alias RuleId = String
 
 type alias Rule = {
   name: String,
-  summary: RuleSummary,
+  summary: Maybe (RuleSummary),
+  --summary: RuleSummary,
   impact: Float
 }
 

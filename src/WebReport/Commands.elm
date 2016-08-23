@@ -64,7 +64,7 @@ decodeRule: Json.Decoder Rule
 decodeRule =
   Json.object3 Rule
     ("localizedRuleName" := Json.string)
-    (Json.at ["summary"] decodeSummary)
+    (Json.maybe ("summary" := decodeSummary))
     ("ruleImpact" := Json.float)
 
 decodeSummary: Json.Decoder RuleSummary

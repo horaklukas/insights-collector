@@ -1,6 +1,6 @@
 module WebReport.Rule exposing (view)
 
-import Html exposing (Html, div, text, h4, span, a)
+import Html exposing (Html, div, text, h4, span, a, em)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import Regex exposing (regex, HowMany (..))
@@ -22,8 +22,18 @@ view activeRule (id, rule) =
           text rule.name
         ]
       ],
-      div [class "panel-body"] (makeRuleSummary rule.summary)--[text (makeRuleSummary rule.summary)]
+      div [class "panel-body"] (ruleSummary rule) 
     ]
+
+ruleSummary: Rule -> List (Html Msg)
+ruleSummary rule =
+  case rule.summary of
+    Just summary ->
+      (makeRuleSummary summary)
+  
+    Nothing ->
+      [em [] <| [text "No description provided"]]
+
 
 makeRuleSummary: RuleSummary -> List (Html Msg)
 makeRuleSummary summary =
