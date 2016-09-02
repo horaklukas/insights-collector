@@ -22,7 +22,7 @@ view activeRule (id, rule) =
           text rule.name
         ]
       ],
-      div [class "panel-body"] (ruleSummary rule) 
+      div [class "panel-body"] (ruleSummary rule)
     ]
 
 ruleSummary: Rule -> List (Html Msg)
@@ -30,7 +30,7 @@ ruleSummary rule =
   case rule.summary of
     Just summary ->
       (makeRuleSummary summary)
-  
+
     Nothing ->
       [em [] <| [text "No description provided"]]
 
@@ -43,7 +43,6 @@ makeRuleSummary summary =
         pieces = summary.format
           |> Regex.replace All (regex "{{|}}") (\{match} -> match ++ (left 1 match))
           |> Regex.split All (regex "{{|}}")
-          |> List.map String.trim
        in
         List.indexedMap (resolvePiece pieces args) pieces
 
