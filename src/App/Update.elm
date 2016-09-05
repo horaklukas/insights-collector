@@ -6,7 +6,7 @@ import App.Models exposing (Model)
 import WebReport.Main as ReportMain
 import WebReport.Messages as ReportMsg
 import WebReport.Update as ReportUpdate
-import WebReport.Models exposing (ReportId, Report, WebUrl, Status (Fetching))
+import WebReport.Models exposing (..)
 
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
@@ -16,8 +16,9 @@ update msg model =
 
     FetchReports webpages ->
       let
-        (newReports, cmds) =
-          List.unzip (List.map initReport webpages)
+        (newReports, cmds) = webpages
+          |> List.map (initReport model.strategy)
+          |> List.unzip
       in
         (
           { model | reports = newReports },
@@ -26,11 +27,23 @@ update msg model =
 
     WebReportMsg id subMsg ->
       let
-        (newReports, cmds) =
-          List.unzip (List.map (updateReport id subMsg) model.reports)
+        (newReports, cmds) = model.reports
+          |> List.map (updateReport id subMsg)
+          |> List.unzip
       in
         (
           { model | reports = newReports },
+          Cmd.batch cmds
+        )
+    ChangeStrategy strategy ->
+      let
+        (newReports, cmds) = model.reports
+          |> List.map getWebPage
+          |> List.map (initReport strategy)
+          |> List.unzip
+      in
+        (
+          { model | strategy = strategy,  reports = newReports },
           Cmd.batch cmds
         )
 
@@ -41,10 +54,10 @@ update msg model =
         Cmd.none
       )
 
-initReport: WebUrl -> (Report, Cmd AppMsg)
-initReport web =
+initReport: ReportStrategy -> WebUrl -> (Report, Cmd AppMsg)
+initReport strategy web =
   let
-    (report, cmds) = ReportMain.init web
+    (report, cmds) = ReportMain.init web strategy
   in
     (
       report,
@@ -64,6 +77,10 @@ updateReport id msg report =
         newReport,
         Cmd.map (WebReportMsg id) cmds
       )
+
+getWebPage: Report -> WebUrl
+getWebPage report =
+  report.webpage
 
 isReportFetching: List Report -> ReportId -> Bool
 isReportFetching reports reportId =

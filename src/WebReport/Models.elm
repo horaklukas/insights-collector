@@ -64,6 +64,17 @@ type alias FormatArg = {
   value: String
 }
 
+type ReportStrategy = Mobile | Desktop
+
 initialData: ReportData
 initialData =
   ReportData 0 (PageStats "" "" "" "" 0 0) (Screenshot "" 0 0 "") []
+
+getStrategyName: ReportStrategy -> String
+getStrategyName strategy =
+  case strategy of
+    Mobile ->
+      "mobile"
+
+    Desktop ->
+      "desktop"

@@ -3,16 +3,16 @@ module WebReport.Main exposing (init)
 import Html exposing (Html)
 import Html.App as App
 
-import WebReport.Models exposing (Report, Status (..), ReportData, initialData)
+import WebReport.Models exposing (Report, Status (..), ReportData, ReportStrategy, initialData)
 import WebReport.Messages exposing (Msg)
 import WebReport.Commands exposing (getInsightReport)
 import WebReport.Update exposing (update)
 
-init: String -> (Report, Cmd Msg)
-init web =
+init: String -> ReportStrategy -> (Report, Cmd Msg)
+init web strategy =
   (
     Report web web Fetching initialData "",
-    getInsightReport web
+    getInsightReport web strategy
   )
 
 -- SUBSCRIPTIONS

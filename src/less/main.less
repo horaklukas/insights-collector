@@ -22,20 +22,20 @@
 @import "~bootstrap/less/input-groups.less";
 @import "~bootstrap/less/navs.less";
 @import "~bootstrap/less/navbar.less";
-@import "~bootstrap/less/breadcrumbs.less";
-@import "~bootstrap/less/pagination.less";
+//@import "~bootstrap/less/breadcrumbs.less";
+//@import "~bootstrap/less/pagination.less";
 @import "~bootstrap/less/pager.less";
 @import "~bootstrap/less/labels.less";
 @import "~bootstrap/less/badges.less";
-@import "~bootstrap/less/jumbotron.less";
+//@import "~bootstrap/less/jumbotron.less";
 @import "~bootstrap/less/thumbnails.less";
 @import "~bootstrap/less/alerts.less";
 @import "~bootstrap/less/progress-bars.less";
 @import "~bootstrap/less/media.less";
 @import "~bootstrap/less/list-group.less";
 @import "~bootstrap/less/panels.less";
-@import "~bootstrap/less/responsive-embed.less";
-@import "~bootstrap/less/wells.less";
+//@import "~bootstrap/less/responsive-embed.less";
+//@import "~bootstrap/less/wells.less";
 @import "~bootstrap/less/close.less";
 
 // Components w/ JavaScript
@@ -48,7 +48,28 @@
 @import "~bootstrap/less/utilities.less";
 @import "~bootstrap/less/responsive-utilities.less";
 
-@listWidth: 300px;
+@import "./variables.less";
+
+.activeItem {
+  border-color: @activeItemBorderColor;
+  background-color: @activeItemBgColor;
+}
+
+.strategy {
+  width: @listWidth;
+
+  li {
+    a {
+      color: #333;
+    }
+
+    &.active {
+      a, a:focus {
+        .activeItem;
+      }
+    }
+  }
+}
 
 .webs-list {
   .list-group;
@@ -58,8 +79,7 @@
     cursor: pointer;
 
     &.active {
-      border-color: lighten(@gray-light, 10%);
-      background-color: lighten(@gray-light, 20%);
+      .activeItem;
     }
 
     .score {
@@ -90,96 +110,4 @@
   }
 }
 
-.detail {
-  .panel-default;
-  position: absolute;
-  top: 0;
-  left: @listWidth;
-  right: 0;
-  border-left: 0;
-
-  .screenshot {
-    text-align: center;
-
-    &.ntb {
-      width: 380px;
-      height: 240px;
-      background: url('../img/mockup-ntb.svg') no-repeat;
-      background-size: 380px 240px;
-    }
-
-    .web-preview {
-      display: inline-block;
-      height: 162px;
-      margin-top: 30px;
-      overflow: hidden;
-
-      img {
-        width: 262px;
-        height: 195px;
-      }
-    }
-  }
-
-  .stats {
-    margin-top: 30px;
-    li {
-      padding: 7px 10px;
-      list-style-type: none;
-      font-size: 1.1em;
-      border-bottom: 1px solid @list-group-border;
-    }
-  }
-
-  .rules-heading {
-    padding: 0 5px;
-    font-weight: bold;
-
-    span {
-      float: right;
-    }
-  }
-
-  .rules {
-    .rule {
-      margin-bottom: 0;
-      border-bottom: 0;
-
-      &:last-child {
-        border-bottom: 1px solid @panel-default-border;
-      }
-
-      &.expanded {
-        color: black;
-
-        .panel-heading {
-          cursor: default;
-          background-color: @gray-light;
-          color: white;
-          border-color: @gray;
-        }
-
-        .panel-body {
-          color: #333;
-        }
-      }
-
-      &.collapsed {
-        .panel-heading {
-          cursor: pointer;
-          border-bottom: none;
-        }
-
-        .panel-body {
-          .hidden;
-        }
-      }
-
-      .panel-title {
-        .badge {
-          float: right;
-        }
-      }
-    }
-  }
-}
+@import "./detail.less";

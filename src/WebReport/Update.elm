@@ -10,8 +10,8 @@ update action report =
     {webpage, status, data, activeRule} = report
   in
     case action of
-      Fetch ->
-        ({ report | data = data, status = Fetching }, getInsightReport webpage)
+      Fetch strategy ->
+        ({ report | data = data, status = Fetching }, getInsightReport webpage strategy)
 
       FetchInsightSucceed webname data ->
         ({ report | data = data, status = Fetched }, Cmd.none)

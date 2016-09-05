@@ -9,15 +9,15 @@ import WebReport.Models exposing (..)
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Rule
 
-view: Report -> Html Msg
-view report =
+view: Report -> ReportStrategy -> Html Msg
+view report strategy =
   let
     sortedRules =
       report.data.rules
         |> List.sortWith sortRulesWithImpact
         |> List.map (WebReport.Rule.view report.activeRule)
   in
-    div [class "detail panel"] [
+    div [class <| "detail panel " ++ getStrategyName strategy] [
       div [class "panel-body grid"] [
         div [class "row"] [
           div [class "col-md-6"] [pageScreenshot report.data.screenshot],
@@ -78,7 +78,7 @@ pageScreenshot screenshot =
   let
     imageData = map fixScreenshotDataChar screenshot.data
   in
-    div [class "screenshot ntb"] [
+    div [class "screenshot"] [
       div [class "web-preview"] [
         img [src ("data:" ++ screenshot.mime ++ ";base64," ++ imageData)] []
       ]

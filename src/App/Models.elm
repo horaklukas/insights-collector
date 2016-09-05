@@ -1,13 +1,14 @@
 module App.Models exposing (Model, initialModel)
 
-import WebReport.Models exposing (Report, ReportId)
+import WebReport.Models exposing (Report, ReportId, ReportStrategy(..))
 
 type alias Model =
   {
     reports: List Report,
-    selected: ReportId
+    selected: ReportId,
+    strategy: ReportStrategy
   }
 
 initialModel: Model
 initialModel =
-  Model [] ""
+  Model [] "" Desktop

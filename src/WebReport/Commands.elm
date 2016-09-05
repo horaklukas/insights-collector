@@ -1,22 +1,45 @@
 module WebReport.Commands exposing (getInsightReport, errorMapper)
 
 import Http
+import String
 import Json.Decode as Json exposing ((:=))
 import Task
 
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Models exposing (..)
 
-baseUrl: String
-baseUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=http%3A%2F%2F"
+type alias Url = String
 
-getInsightReport: String -> Cmd Msg
-getInsightReport webname =
+type alias Param = (String, String)
+
+baseUrl: Url
+baseUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed"
+
+getInsightReport: String -> ReportStrategy -> Cmd Msg
+getInsightReport webname strategy =
   let
-    url = baseUrl ++ webname ++ "&screenshot=true"
     succededCallback = FetchInsightSucceed webname
+    url = makeUrl webname <| getStrategyName strategy
   in
     Task.perform FetchInsightFail succededCallback (Http.get decodeReport url)
+
+makeUrl: String -> String -> Url
+makeUrl webname strategy =
+  let
+    params = [
+      ("url", "http%3A%2F%2F" ++ webname),
+      ("strategy", strategy),
+      ("screenshot", "true")
+    ]
+  in
+    params
+      |> List.map makeUrlParam
+      |> String.join "&"
+      |> String.append (baseUrl ++ "?")
+
+makeUrlParam: Param -> String
+makeUrlParam (paramName, value) =
+  paramName ++ "=" ++ value
 
 decodeReport: Json.Decoder ReportData
 decodeReport =
@@ -57,8 +80,6 @@ decodeScreenshot =
 decodeRules: Json.Decoder Rules
 decodeRules =
   Json.keyValuePairs decodeRule
-  --Json.keyValuePairs Rule
-  -- ("summary" := Json.string)
 
 decodeRule: Json.Decoder Rule
 decodeRule =
