@@ -1,9 +1,9 @@
 module WebReport.Models exposing (..)
 
+import Rules.Models exposing (RuleId, Rules)
+
 type alias ReportId = String
-
 type alias WebUrl = String
-
 type Status = Fetching | Fetched | Error String
 
 type alias Report = {
@@ -40,28 +40,6 @@ type alias Screenshot = {
   width: Int,
   height: Int,
   mime: String
-}
-
-type alias Rules = List (RuleId, Rule)
-
-type alias RuleId = String
-
-type alias Rule = {
-  name: String,
-  summary: Maybe (RuleSummary),
-  --summary: RuleSummary,
-  impact: Float
-}
-
-type alias RuleSummary = {
-  format: String,
-  args: Maybe (List FormatArg)
-}
-
-type alias FormatArg = {
-  argType: String,
-  key: String,
-  value: String
 }
 
 type ReportStrategy = Mobile | Desktop

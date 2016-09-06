@@ -1,4 +1,4 @@
-module WebReport.Rule exposing (view)
+module Rules.Rule exposing (view)
 
 import Html exposing (Html, div, text, h4, span, a, em)
 import Html.Attributes exposing (class, href)
@@ -7,8 +7,9 @@ import Regex exposing (regex, HowMany (..))
 import String exposing (left)
 import Array
 
-import WebReport.Models exposing (..)
+--import WebReport.Models exposing (..)
 import WebReport.Messages exposing (Msg (..))
+import Rules.Models exposing (RuleId, Rule, RuleSummary, FormatArg)
 
 view: RuleId -> (RuleId, Rule) -> Html Msg
 view activeRule (id, rule) =

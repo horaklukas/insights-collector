@@ -2,7 +2,8 @@ module WebReport.Messages exposing (Msg (..))
 
 import Http
 
-import WebReport.Models exposing (ReportData, RuleId, ReportStrategy)
+import WebReport.Models exposing (ReportData, ReportStrategy)
+import Rules.Models exposing (RuleId)
 
 type Msg = Fetch ReportStrategy
   | FetchInsightSucceed String ReportData

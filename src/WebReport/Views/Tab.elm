@@ -1,4 +1,4 @@
-module WebReport.Tab exposing (view)
+module WebReport.Views.Tab exposing (view)
 
 import Html exposing (Html, div, span, text)
 import Html.Attributes exposing (class)

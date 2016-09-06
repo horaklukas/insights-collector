@@ -50,23 +50,12 @@
 
 @import "./variables.less";
 
-.activeItem {
-  border-color: @activeItemBorderColor;
-  background-color: @activeItemBgColor;
-}
-
 .strategy {
   width: @listWidth;
 
   li {
     a {
       color: #333;
-    }
-
-    &.active {
-      a, a:focus {
-        .activeItem;
-      }
     }
   }
 }
@@ -79,7 +68,8 @@
     cursor: pointer;
 
     &.active {
-      .activeItem;
+      border-color: @activeItemBorderColor;
+      background-color: @activeItemBgColor;
     }
 
     .score {

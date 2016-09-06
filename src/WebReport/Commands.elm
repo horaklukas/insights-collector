@@ -7,6 +7,7 @@ import Task
 
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Models exposing (..)
+import Rules.Models exposing (Rules, Rule, RuleSummary, FormatArg)
 
 type alias Url = String
 

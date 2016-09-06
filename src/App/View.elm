@@ -8,8 +8,8 @@ import Html.Events exposing (onClick)
 import App.Models exposing (Model)
 import App.Messages exposing (AppMsg (..))
 import WebReport.Messages exposing (Msg (..))
-import WebReport.Tab as ReportTab
-import WebReport.Detail as ReportDetail
+import WebReport.Views.Tab as ReportTab
+import WebReport.Views.Detail as ReportDetail
 import WebReport.Models exposing (Report, ReportId, Status (Fetching), ReportStrategy(..))
 
 view : Model -> Html AppMsg
