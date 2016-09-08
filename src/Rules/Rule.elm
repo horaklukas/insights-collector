@@ -19,12 +19,22 @@ view activeRule (id, rule) =
     div [class ("panel panel-default rule" ++ activeClass), onClick (SelectRule id)] [
       div [class "panel-heading"] [
         h4 [class "panel-title"] [
-          span [class "badge"] [text <| toString <| round rule.impact],
+          ruleImpact rule.impact,
           text rule.name
         ]
       ],
       div [class "panel-body"] (ruleSummary rule)
     ]
+
+ruleImpact: Float -> Html Msg
+ruleImpact impact =
+  let
+    intImpact = round impact
+  in
+    if intImpact > 0 then
+      span [class "badge"] [text <| toString <| intImpact]
+    else
+      span [class "glyphicon glyphicon-ok-circle"] []
 
 ruleSummary: Rule -> List (Html Msg)
 ruleSummary rule =
