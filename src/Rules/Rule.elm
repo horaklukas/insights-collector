@@ -1,6 +1,6 @@
 module Rules.Rule exposing (view)
 
-import Html exposing (Html, div, text, h4, span, a, em)
+import Html exposing (Html, div, p, text, h4, span, a, em)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import Regex exposing (regex, HowMany (..))
@@ -9,7 +9,7 @@ import Array
 
 --import WebReport.Models exposing (..)
 import WebReport.Messages exposing (Msg (..))
-import Rules.Models exposing (RuleId, Rule, RuleSummary, FormatArg)
+import Rules.Models exposing (RuleId, Rule, FormattedMessage, FormatArg, UrlBlock)
 
 view: RuleId -> (RuleId, Rule) -> Html Msg
 view activeRule (id, rule) =
@@ -23,7 +23,10 @@ view activeRule (id, rule) =
           text rule.name
         ]
       ],
-      div [class "panel-body"] (ruleSummary rule)
+      div [class "panel-body"] [
+        ruleSummary rule,
+        urlBlocks rule
+      ]
     ]
 
 ruleImpact: Float -> Html Msg
@@ -36,18 +39,18 @@ ruleImpact impact =
     else
       span [class "glyphicon glyphicon-ok-circle"] []
 
-ruleSummary: Rule -> List (Html Msg)
+ruleSummary: Rule -> Html Msg
 ruleSummary rule =
   case rule.summary of
     Just summary ->
-      (makeRuleSummary summary)
+      div [class "summary"] (makeMessage summary)
 
     Nothing ->
-      [em [] <| [text "No description provided"]]
+      em [] <| [text "No description provided"]
 
 
-makeRuleSummary: RuleSummary -> List (Html Msg)
-makeRuleSummary summary =
+makeMessage: FormattedMessage -> List (Html Msg)
+makeMessage summary =
   case summary.args of
     Just args ->
       let
@@ -102,3 +105,34 @@ resolveArgValue argKey args =
     case maybeArg of
       Just arg -> arg.value
       Nothing -> ""
+
+urlBlocks: Rule -> Html Msg
+urlBlocks rule =
+  case rule.urlBlocks of
+    Just blocks ->
+      div [class "url-blocks"]  (List.map urlBlock blocks)
+
+    Nothing ->
+      text ""
+
+urlBlock: UrlBlock -> Html Msg
+urlBlock block =
+  let
+    headerBlock = blockMessage "header" <| makeMessage block.header
+  in
+    div [] ( headerBlock :: (urlsBlocks block) )
+
+urlsBlocks: UrlBlock -> List (Html Msg)
+urlsBlocks block =
+  case block.urls of
+    Just urls ->
+      urls
+        |> List.map makeMessage
+        |> List.map (blockMessage "url")
+
+    Nothing ->
+      []
+
+blockMessage: String -> List (Html Msg) -> Html Msg
+blockMessage className message =
+  p [class className] message

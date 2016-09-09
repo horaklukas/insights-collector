@@ -6,11 +6,12 @@ type alias RuleId = String
 
 type alias Rule = {
   name: String,
-  summary: Maybe (RuleSummary),
+  summary: Maybe (FormattedMessage),
+  urlBlocks: Maybe (List UrlBlock),
   impact: Float
 }
 
-type alias RuleSummary = {
+type alias FormattedMessage = {
   format: String,
   args: Maybe (List FormatArg)
 }
@@ -19,4 +20,9 @@ type alias FormatArg = {
   argType: String,
   key: String,
   value: String
+}
+
+type alias UrlBlock = {
+  header: FormattedMessage,
+  urls: Maybe (List FormattedMessage)
 }

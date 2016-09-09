@@ -7,7 +7,7 @@ import Task
 
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Models exposing (..)
-import Rules.Models exposing (Rules, Rule, RuleSummary, FormatArg)
+import Rules.Models exposing (Rules, Rule, FormattedMessage, FormatArg, UrlBlock)
 
 type alias Url = String
 
@@ -84,14 +84,15 @@ decodeRules =
 
 decodeRule: Json.Decoder Rule
 decodeRule =
-  Json.object3 Rule
+  Json.object4 Rule
     ("localizedRuleName" := Json.string)
     (Json.maybe ("summary" := decodeSummary))
+    (Json.maybe ("urlBlocks" := Json.list decodeUrlBlock))
     ("ruleImpact" := Json.float)
 
-decodeSummary: Json.Decoder RuleSummary
+decodeSummary: Json.Decoder FormattedMessage
 decodeSummary =
-  Json.object2 RuleSummary
+  Json.object2 FormattedMessage
     ("format" := Json.string)
     (Json.maybe ("args" := Json.list decodeFormatArg))
 
@@ -101,6 +102,16 @@ decodeFormatArg =
     ("type" := Json.string)
     ("key" := Json.string)
     ("value" := Json.string)
+
+decodeUrlBlock: Json.Decoder UrlBlock
+decodeUrlBlock =
+  Json.object2 UrlBlock
+    ("header" := decodeSummary)
+    (Json.maybe ("urls" := Json.list decodeUrl))
+
+decodeUrl: Json.Decoder FormattedMessage
+decodeUrl =
+  ("result" := decodeSummary)
 
 errorMapper: Http.Error -> String
 errorMapper err =
