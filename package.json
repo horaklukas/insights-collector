@@ -9,7 +9,8 @@
     "build": "NODE_ENV=production webpack && cp api.php db.json .htaccess dist/",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --port 3000",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "node ./deploy"
   },
   "author": "",
   "license": "ISC",
@@ -18,9 +19,11 @@
     "url": "https://github.com/horaklukas/web-power-inspector.git"
   },
   "devDependencies": {
+    "colors": "^1.1.2",
     "css-loader": "^0.23.1",
     "elm-webpack-loader": "^3.0.3",
     "file-loader": "^0.9.0",
+    "ftp-deploy": "^1.1.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
