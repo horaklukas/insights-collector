@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run api",
     "api": "node api.js",
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack && cp api.php db.json .htaccess dist/",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --port 3000",
     "test": "echo \"Error: no test specified\" && exit 1"

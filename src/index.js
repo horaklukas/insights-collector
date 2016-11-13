@@ -8,4 +8,7 @@ require('./index.html');
 var Elm = require('./Main.elm');
 var mountNode = document.getElementById('main');
 
-var app = Elm.Main.embed(mountNode);
+var options = {
+  apiUrl: API_URL
+}
+var app = Elm.Main.embed(mountNode, options);
