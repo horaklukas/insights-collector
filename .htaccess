@@ -1,0 +1,8 @@
+# enable cool URL
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # cool uris :) for data requests
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule (.*)/?$ ./api.php?path=$1 [L]
+</IfModule>
