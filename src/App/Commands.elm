@@ -10,10 +10,11 @@ import WebReport.Models exposing (WebUrl)
 dbUrl: String
 dbUrl = "http://localhost:4000"
 
-fetchWebpages: Cmd AppMsg
-fetchWebpages =
+fetchWebpages: String -> Cmd AppMsg
+fetchWebpages apiUrl =
   let
-    webpagesUrl = dbUrl ++ "/webpages"
+    --dbUrl = parser
+    webpagesUrl = apiUrl ++ "/webpages"
   in
     Task.perform FetchWebpagesFail FetchReports (Http.get decodeCollection webpagesUrl)
 

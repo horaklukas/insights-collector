@@ -9,13 +9,16 @@ import App.Commands exposing (fetchWebpages)
 import App.Update exposing (update)
 import App.View exposing (view)
 
-  -- INIT
+type alias Flags = {
+  apiUrl: String
+}
 
-init : ( Model, Cmd AppMsg )
-init =
+  -- INIT
+init : Flags -> ( Model, Cmd AppMsg )
+init flags =
   (
     initialModel,
-    fetchWebpages
+    fetchWebpages flags.apiUrl
   )
 
 -- SUBSCRIPTIONS
@@ -25,7 +28,7 @@ subscriptions model =
     Sub.none
 
 main =
-  App.program {
+  App.programWithFlags {
     init = init ,
     update = update,
     subscriptions = subscriptions,

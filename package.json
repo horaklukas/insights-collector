@@ -1,15 +1,16 @@
 {
   "name": "insights-collector",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
     "start": "npm run api",
     "api": "node api.js",
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack && cp api.php db.json .htaccess dist/",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --port 3000",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "oldeploy"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "file-loader": "^0.9.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "oldeploy": "github:horaklukas/oldeploy",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",

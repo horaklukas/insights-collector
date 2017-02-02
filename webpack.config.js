@@ -1,4 +1,9 @@
+var webpack = require('webpack');
 var path = require('path');
+
+var TARGET_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+
+console.log('Target environment is', TARGET_ENV);
 
 module.exports = {
   entry: {
@@ -40,6 +45,12 @@ module.exports = {
 
     noParse: /\.elm$/,
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      API_URL: TARGET_ENV === 'production' ? '"."' : '"http://localhost:4000"'
+    })
+  ],
 
   devServer: {
     inline: true,
