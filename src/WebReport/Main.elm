@@ -1,7 +1,7 @@
 module WebReport.Main exposing (init)
 
 import Html exposing (Html)
-import Html.App as App
+-- import Html.App as App
 
 import WebReport.Models exposing (Report, Status (..), ReportData, ReportStrategy, initialData)
 import WebReport.Messages exposing (Msg)

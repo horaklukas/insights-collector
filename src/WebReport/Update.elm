@@ -13,10 +13,10 @@ update action report =
       Fetch strategy ->
         ({ report | data = data, status = Fetching }, getInsightReport webpage strategy)
 
-      FetchInsightSucceed webname data ->
+      Insight (Ok data) ->
         ({ report | data = data, status = Fetched }, Cmd.none)
 
-      FetchInsightFail err ->
+      Insight (Err err) ->
         ({ report | data = data, status = (Error (errorMapper err)) }, Cmd.none)
 
       SelectRule ruleId ->

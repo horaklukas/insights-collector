@@ -1,8 +1,8 @@
 module WebReport.Commands exposing (getInsightReport, errorMapper)
 
-import Http
+import Http exposing (Error(..))
 import String
-import Json.Decode as Json exposing ((:=))
+import Json.Decode as Json exposing (..)
 import Task
 
 import WebReport.Messages exposing (Msg (..))
@@ -19,10 +19,10 @@ baseUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed"
 getInsightReport: String -> ReportStrategy -> Cmd Msg
 getInsightReport webname strategy =
   let
-    succededCallback = FetchInsightSucceed webname
-    url = makeUrl webname <| getStrategyName strategy
+    strategyName = getStrategyName strategy
+    url = makeUrl webname strategyName
   in
-    Task.perform FetchInsightFail succededCallback (Http.get decodeReport url)
+    Http.send Insight (Http.get url decodeReport)
 
 makeUrl: String -> String -> Url
 makeUrl webname strategy =
@@ -44,7 +44,7 @@ makeUrlParam (paramName, value) =
 
 decodeReport: Json.Decoder ReportData
 decodeReport =
-  Json.object4 ReportData
+  map4 ReportData
     decodeScore
     (Json.at ["pageStats"] decodeStats)
     (Json.at ["screenshot"] decodeScreenshot)
@@ -57,26 +57,26 @@ decodeScore =
 
 decodeStats: Json.Decoder PageStats
 decodeStats =
-  Json.object6 PageStats
-    ("cssResponseBytes" := Json.string)
-    ("htmlResponseBytes" := Json.string)
-    ("imageResponseBytes" := Json.string)
-    ("javascriptResponseBytes" := Json.string)
-    ("numberCssResources" := Json.int)
-    --("numberHosts" := Json.int)
-    ("numberJsResources" := Json.int)
-    --("numberResources" := Json.int)
-    --("numberStaticResources" := Json.int)
-    --("otherResponseBytes" := Json.int)
-    --("totalRequestBytes" := Json.int)
+  map6 PageStats
+    (field "cssResponseBytes" Json.string)
+    (field "htmlResponseBytes" Json.string)
+    (field "imageResponseBytes" Json.string)
+    (field "javascriptResponseBytes" Json.string)
+    (field "numberCssResources" Json.int)
+    --(field "numberHosts" Json.int)
+    (field "numberJsResources" Json.int)
+    --(field "numberResources" Json.int)
+    --(field "numberStaticResources" Json.int)
+    --(field "otherResponseBytes" Json.int)
+    --(field "totalRequestBytes" Json.int)
 
 decodeScreenshot: Json.Decoder Screenshot
 decodeScreenshot =
-  Json.object4 Screenshot
-    ("data" := Json.string)
-    ("width" := Json.int)
-    ("height" := Json.int)
-    ("mime_type" := Json.string)
+  map4 Screenshot
+    (field "data" Json.string)
+    (field "width" Json.int)
+    (field "height" Json.int)
+    (field "mime_type" Json.string)
 
 decodeRules: Json.Decoder Rules
 decodeRules =
@@ -84,37 +84,37 @@ decodeRules =
 
 decodeRule: Json.Decoder Rule
 decodeRule =
-  Json.object4 Rule
-    ("localizedRuleName" := Json.string)
-    (Json.maybe ("summary" := decodeSummary))
-    (Json.maybe ("urlBlocks" := Json.list decodeUrlBlock))
-    ("ruleImpact" := Json.float)
+  map4 Rule
+    (field "localizedRuleName" Json.string)
+    (Json.maybe (field "summary" decodeSummary))
+    (Json.maybe (field "urlBlocks" (list decodeUrlBlock)))
+    (field "ruleImpact" Json.float)
 
 decodeSummary: Json.Decoder FormattedMessage
 decodeSummary =
-  Json.object2 FormattedMessage
-    ("format" := Json.string)
-    (Json.maybe ("args" := Json.list decodeFormatArg))
+  map2 FormattedMessage
+    (field "format" Json.string)
+    (Json.maybe (field "args" (list decodeFormatArg)))
 
 decodeFormatArg: Json.Decoder FormatArg
 decodeFormatArg =
-  Json.object3 FormatArg
-    ("type" := Json.string)
-    ("key" := Json.string)
-    ("value" := Json.string)
+  map3 FormatArg
+    (field "type" Json.string)
+    (field "key" Json.string)
+    (field "value" Json.string)
 
 decodeUrlBlock: Json.Decoder UrlBlock
 decodeUrlBlock =
-  Json.object2 UrlBlock
-    ("header" := decodeSummary)
-    (Json.maybe ("urls" := Json.list decodeUrl))
+  map2 UrlBlock
+    (field "header" decodeSummary)
+    (Json.maybe (field "urls" (list decodeUrl)))
 
 decodeUrl: Json.Decoder FormattedMessage
 decodeUrl =
-  ("result" := decodeSummary)
+  (field "result" decodeSummary)
 
 errorMapper: Http.Error -> String
 errorMapper err =
     case err of
-      Http.UnexpectedPayload s -> "Payload" ++ s
+      BadPayload message response -> "Payload" ++ message
       otherwise -> "http error"

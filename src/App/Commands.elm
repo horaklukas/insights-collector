@@ -16,7 +16,7 @@ fetchWebpages apiUrl =
     --dbUrl = parser
     webpagesUrl = apiUrl ++ "/webpages"
   in
-    Task.perform FetchWebpagesFail FetchReports (Http.get decodeCollection webpagesUrl)
+    Http.send Webpages (Http.get webpagesUrl decodeCollection)
 
 decodeCollection: Json.Decoder (List WebUrl)
 decodeCollection =

@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (Html)
-import Html.App as App
+-- import Html.App as App
 
 import App.Models exposing (Model, initialModel)
 import App.Messages exposing (AppMsg)
@@ -28,7 +28,7 @@ subscriptions model =
     Sub.none
 
 main =
-  App.programWithFlags {
+  Html.programWithFlags {
     init = init ,
     update = update,
     subscriptions = subscriptions,
