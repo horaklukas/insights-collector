@@ -59,45 +59,5 @@
     }
   }
 }
-
-.webs-list {
-  .list-group;
-  width: @list-width;
-
-  .list-group-item {
-    cursor: pointer;
-
-    &.active {
-      border-color: @active-item-border-color;
-      background-color: @active-item-bg-color;
-    }
-
-    .score {
-      display: inline-block;
-      padding: 2px 4px;
-      float: right;
-      box-sizing: border-box;
-      border-radius: 10px;
-      color: white;
-    }
-
-    .info .score {
-      background-color: @gray-light;
-    }
-
-    .low .score,
-    .error .score {
-      background-color: @brand-danger;
-    }
-
-    .medium .score {
-      background-color: @brand-warning;
-    }
-
-    .high .score {
-      background-color: @brand-success;
-    }
-  }
-}
-
+@import "./webs-list.less";
 @import "./detail.less";

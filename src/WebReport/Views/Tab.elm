@@ -7,7 +7,6 @@ import WebReport.Models exposing (Report, Status (..))
 import WebReport.Messages exposing (Msg)
 
 type alias ScoreClassName = String
-type alias ScoreStatus = String
 
 view: Report -> Html Msg
 view report =
@@ -16,21 +15,21 @@ view report =
   in
     div [class scoreClassName]
       [
-        span [class "score"] [ text (scoreStatus) ],
+        span [class "score"] [ scoreStatus ],
         span [] [ text report.webpage ]
       ]
 
-getScore: Report -> (ScoreClassName, ScoreStatus)
+getScore: Report -> (ScoreClassName, Html Msg)
 getScore {data, status} =
   case status of
     Fetching ->
-        ("info", "Loading report...")
+        ("loading", span [class "magnify-loader"][])
 
     Fetched ->
-      (getClassNameByScore data.score, toString(data.score) ++ "%" )
+      (getClassNameByScore data.score, text(toString(data.score) ++ "%" ))
 
     Error errMessage ->
-      ("error", "Error at report loading" ++ errMessage)
+      ("error", text("Error at report loading" ++ errMessage))
 
 getClassNameByScore: Float -> String
 getClassNameByScore score =

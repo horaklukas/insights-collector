@@ -3,3 +3,4 @@ elm-stuff/
 dist/
 npm-debug.log*
 .ftpauth
+.DS_store
