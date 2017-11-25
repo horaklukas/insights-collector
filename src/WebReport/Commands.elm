@@ -1,46 +1,22 @@
 module WebReport.Commands exposing (getInsightReport, errorMapper)
 
 import Http exposing (Error(..))
-import String
 import Json.Decode as Json exposing (..)
-import Task
 
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Models exposing (..)
+import WebReport.Url exposing (makeUrl)
 import Rules.Models exposing (Rules, Rule, FormattedMessage, FormatArg, UrlBlock)
 
-type alias Url = String
-
-type alias Param = (String, String)
-
-baseUrl: Url
-baseUrl = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed"
-
 getInsightReport: String -> ReportStrategy -> Cmd Msg
-getInsightReport webname strategy =
+getInsightReport website strategy =
   let
     strategyName = getStrategyName strategy
-    url = makeUrl webname strategyName
+    url = makeUrl website strategyName
   in
     Http.send Insight (Http.get url decodeReport)
 
-makeUrl: String -> String -> Url
-makeUrl webname strategy =
-  let
-    params = [
-      ("url", "http%3A%2F%2F" ++ webname),
-      ("strategy", strategy),
-      ("screenshot", "true")
-    ]
-  in
-    params
-      |> List.map makeUrlParam
-      |> String.join "&"
-      |> String.append (baseUrl ++ "?")
 
-makeUrlParam: Param -> String
-makeUrlParam (paramName, value) =
-  paramName ++ "=" ++ value
 
 decodeReport: Json.Decoder ReportData
 decodeReport =
