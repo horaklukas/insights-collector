@@ -18,20 +18,30 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.less$/,
-        loader: 'style!css!less'
+        use: [
+          {
+            loader: "style-loader"
+          }, {
+              loader: "css-loader"
+          }, {
+              loader: "less-loader"
+          }
+        ]
       },
       {
         test:    /\.html$/,
         exclude: /node_modules/,
-        loader:  'file?name=[name].[ext]',
+        loader:  'file-loader?name=[name].[ext]',
       },
       {
         test:    /\.elm$/,
         exclude: [/elm-stuff/, /node_modules/],
-        loader:  'elm-webpack',
+        use: {
+          loader:  'elm-webpack-loader',
+        }
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -40,10 +50,6 @@ module.exports = {
       {
         test: /\.(ttf|eot|svg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader',
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
       }
     ],
 
