@@ -1,13 +1,11 @@
 module App.View exposing (view)
 
 import Html exposing (Html, div, ul, li, button, text, a)
--- import Html.App as App
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 
 import App.Models exposing (Model)
 import App.Messages exposing (AppMsg (..))
--- import WebReport.Messages exposing (Msg (..))
 import WebReport.Views.Tab as ReportTab
 import WebReport.Views.Detail as ReportDetail
 import WebReport.Models exposing (Report, ReportId, Status (Fetching), ReportStrategy(..))
