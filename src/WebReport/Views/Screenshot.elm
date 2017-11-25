@@ -1,7 +1,7 @@
 module WebReport.Views.Screenshot exposing (..)
 
-import Html exposing (Html, div, img)
-import Html.Attributes exposing (class, src, width, height)
+import Html exposing (Html, div, img, text)
+import Html.Attributes exposing (class, src, width, height, alt)
 import String
 
 import WebReport.Models exposing (Screenshot)
@@ -11,11 +11,12 @@ view: Screenshot -> Html Msg
 view screenshot =
   let
     imageData = String.map fixDataChar screenshot.data
+    display = [
+      img [src ("data:" ++ screenshot.mime ++ ";base64," ++ imageData), alt "Loading..."] []
+    ]
   in
     div [class "screenshot"] [
-      div [class "web-preview"] [
-        img [src ("data:" ++ screenshot.mime ++ ";base64," ++ imageData)] []
-      ]
+      div [class "web-preview"] display
     ]
 
 fixDataChar: Char -> Char
