@@ -41,6 +41,10 @@ module.exports = {
         test: /\.(ttf|eot|svg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader',
       },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }
     ],
 
     noParse: /\.elm$/,

@@ -18,7 +18,8 @@ view model =
         strategySelect model,
         websList model,
         webDetail model
-      ]
+      ],
+      div [class "footer"] [text ("v" ++ model.appVersion)]
     ]
 
 strategySelect: Model -> Html AppMsg

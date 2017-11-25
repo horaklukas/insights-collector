@@ -10,14 +10,15 @@ import App.Update exposing (update)
 import App.View exposing (view)
 
 type alias Flags = {
-  apiUrl: String
+  apiUrl: String,
+  appVersion: String
 }
 
   -- INIT
 init : Flags -> ( Model, Cmd AppMsg )
 init flags =
   (
-    initialModel,
+    initialModel flags.appVersion,
     fetchWebpages flags.apiUrl
   )
 

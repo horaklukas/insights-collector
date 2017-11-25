@@ -6,9 +6,10 @@ type alias Model =
   {
     reports: List Report,
     selected: ReportId,
-    strategy: ReportStrategy
+    strategy: ReportStrategy,
+    appVersion: String
   }
 
-initialModel: Model
-initialModel =
-  Model [] "" Desktop
+initialModel: String -> Model
+initialModel appVersion =
+  Model [] "" Desktop appVersion
