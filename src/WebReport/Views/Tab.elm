@@ -29,7 +29,7 @@ getScore {data, status} =
       (getClassNameByScore data.score, text(toString(data.score) ++ "%" ))
 
     Error errMessage ->
-      ("error", text("Error at report loading" ++ errMessage))
+      ("error", text("Error at report loading: " ++ errMessage))
 
 getClassNameByScore: Float -> String
 getClassNameByScore score =

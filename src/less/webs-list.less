@@ -19,7 +19,7 @@
     
         .score {
             float: right;
-            padding: 2px 4px;
+            padding: @score-padding-vertical @score-padding-horizontal;
             box-sizing: border-box;
             border-radius: 10px;
             color: white;
@@ -40,12 +40,50 @@
                 background-size: cover;
             }
         }
-    
-        .low .score,
+        
+        // in case of error, there is error message in score box
         .error .score {
+            @err-flag-width: 16px;
+
+            width: @err-flag-width;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            margin-left: 1px;
+            
+            border-radius: 0 5px 5px 0;
+            background-color: @brand-danger;
+
+            cursor: default;
+            white-space: pre;
+
+            &:before {
+                display: inline-block;
+                width: @err-flag-width - (2 * @score-padding-horizontal);
+                height: 100%;
+
+                margin-right: 5px;
+
+                content: '!';
+                text-align: center;
+                font-weight: bold;
+            }
+
+            &:hover {
+                width: auto;
+
+                &:before {
+                    width: 0;
+                    content: ' ';
+                }
+            }
+        }
+        
+        .low .score {
             background-color: @brand-danger;
         }
-    
+        
         .medium .score {
             background-color: @brand-warning;
         }
