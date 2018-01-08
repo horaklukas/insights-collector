@@ -1,7 +1,9 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 
 var TARGET_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+var isDistBuild = TARGET_ENV === 'dist';
 
 console.log('Target environment is', TARGET_ENV);
 
@@ -13,7 +15,7 @@ module.exports = {
   },
 
   output: {
-    path: path.resolve(__dirname + '/dist'),
+    path: path.resolve(__dirname + '/' + (isDistBuild ? 'dist' : 'build')),
     filename: '[name].js',
   },
 
@@ -58,10 +60,16 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-      API_URL: TARGET_ENV === 'production' ? '"."' : '"http://localhost:4000"'
-    })
+      API_URL: TARGET_ENV === 'production' || isDistBuild ? '"."' : '"http://localhost:4000"'
+    }),
+    new CopyWebpackPlugin(
+      (isDistBuild ? [] : [
+        { from: './src/api/api.php' },
+        { from: './db.json' },
+        { from: './src/api/.htaccess' },
+      ]).concat([{ from: './src/index.html' }])
+    ),
   ],
-
   devServer: {
     inline: true,
     stats: { colors: true },

@@ -1,6 +1,6 @@
 node_modules/
 elm-stuff/
-dist/
+build/
 npm-debug.log*
 .ftpauth
 .DS_store

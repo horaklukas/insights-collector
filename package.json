@@ -5,21 +5,24 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run api",
-    "api": "node api.js",
-    "build": "NODE_ENV=production webpack && cp api.php db.json .htaccess dist/",
+    "api": "node src/api/api.js",
+    "build": "NODE_ENV=production webpack",
+    "dist": "NODE_ENV=dist webpack",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --port 3000",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "oldeploy"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/horaklukas/insights-collector.git"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.2.3",
     "css-loader": "^0.23.1",
+    "elm": "^0.18.0",
     "elm-webpack-loader": "4",
     "file-loader": "^0.9.0",
     "less": "^2.7.1",
