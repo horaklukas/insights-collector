@@ -4,12 +4,10 @@
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
-    "start": "npm run api",
-    "api": "node src/api/api.js",
+    "start": "webpack-dev-server --port 3000",
     "build": "NODE_ENV=production webpack",
     "dist": "NODE_ENV=dist webpack",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --port 3000",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "oldeploy"
   },
@@ -35,7 +33,6 @@
     "webpack-dev-server": "2"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "json-server": "^0.8.17"
+    "bootstrap": "^3.3.7"
   }
 }
