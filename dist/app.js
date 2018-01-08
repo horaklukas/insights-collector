@@ -87,7 +87,8 @@ var mountNode = document.getElementById('main');
 
 var options = {
   apiUrl: ".",
-  appVersion: version
+  appVersion: version,
+  webpages: window.WEBPAGES || []
 }
 var app = Elm.Main.embed(mountNode, options);
 
@@ -9941,16 +9942,6 @@ var _user$project$App_Messages$Webpages = function (a) {
 	return {ctor: 'Webpages', _0: a};
 };
 
-var _user$project$App_Commands$decodeCollection = _elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string);
-var _user$project$App_Commands$fetchWebpages = function (apiUrl) {
-	var webpagesUrl = A2(_elm_lang$core$Basics_ops['++'], apiUrl, '/webpages');
-	return A2(
-		_elm_lang$http$Http$send,
-		_user$project$App_Messages$Webpages,
-		A2(_elm_lang$http$Http$get, webpagesUrl, _user$project$App_Commands$decodeCollection));
-};
-var _user$project$App_Commands$dbUrl = 'http://localhost:4000';
-
 var _user$project$App_Models$Model = F4(
 	function (a, b, c, d) {
 		return {reports: a, selected: b, strategy: c, appVersion: d};
@@ -10230,24 +10221,20 @@ var _user$project$App_Update$update = F2(
 		var _p2 = msg;
 		switch (_p2.ctor) {
 			case 'Webpages':
-				if (_p2._0.ctor === 'Err') {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				} else {
-					var _p3 = _elm_lang$core$List$unzip(
-						A2(
-							_elm_lang$core$List$map,
-							_user$project$App_Update$initReport(model.strategy),
-							_p2._0._0));
-					var newReports = _p3._0;
-					var cmds = _p3._1;
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{reports: newReports}),
-						_1: _elm_lang$core$Platform_Cmd$batch(cmds)
-					};
-				}
+				var _p3 = _elm_lang$core$List$unzip(
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$App_Update$initReport(model.strategy),
+						_p2._0));
+				var newReports = _p3._0;
+				var cmds = _p3._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{reports: newReports}),
+					_1: _elm_lang$core$Platform_Cmd$batch(cmds)
+				};
 			case 'WebReportMsg':
 				var _p4 = _elm_lang$core$List$unzip(
 					A2(
@@ -11152,7 +11139,10 @@ var _user$project$Main$init = function (flags) {
 	return {
 		ctor: '_Tuple2',
 		_0: _user$project$App_Models$initialModel(flags.appVersion),
-		_1: _user$project$App_Commands$fetchWebpages(flags.apiUrl)
+		_1: A2(
+			_elm_lang$core$Task$perform,
+			_user$project$App_Messages$Webpages,
+			_elm_lang$core$Task$succeed(flags.webpages))
 	};
 };
 var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
@@ -11163,15 +11153,23 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 			return A2(
 				_elm_lang$core$Json_Decode$andThen,
 				function (appVersion) {
-					return _elm_lang$core$Json_Decode$succeed(
-						{apiUrl: apiUrl, appVersion: appVersion});
+					return A2(
+						_elm_lang$core$Json_Decode$andThen,
+						function (webpages) {
+							return _elm_lang$core$Json_Decode$succeed(
+								{apiUrl: apiUrl, appVersion: appVersion, webpages: webpages});
+						},
+						A2(
+							_elm_lang$core$Json_Decode$field,
+							'webpages',
+							_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)));
 				},
 				A2(_elm_lang$core$Json_Decode$field, 'appVersion', _elm_lang$core$Json_Decode$string));
 		},
 		A2(_elm_lang$core$Json_Decode$field, 'apiUrl', _elm_lang$core$Json_Decode$string)));
-var _user$project$Main$Flags = F2(
-	function (a, b) {
-		return {apiUrl: a, appVersion: b};
+var _user$project$Main$Flags = F3(
+	function (a, b, c) {
+		return {apiUrl: a, appVersion: b, webpages: c};
 	});
 
 var Elm = {};
@@ -11537,7 +11535,7 @@ module.exports = __webpack_require__.p + "448c34a56d699c29117adc64c43affeb.woff2
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"insights-collector","version":"0.5.0","description":"App for reporting speed and power of web sites using Google insights","main":"index.js","scripts":{"start":"npm run api","api":"node src/api/api.js","build":"NODE_ENV=production webpack","dist":"NODE_ENV=dist webpack","watch":"webpack --watch","dev":"webpack-dev-server --port 3000","test":"echo \"Error: no test specified\" && exit 1","deploy":"oldeploy"},"author":"","license":"MIT","repository":{"type":"git","url":"https://github.com/horaklukas/insights-collector.git"},"devDependencies":{"copy-webpack-plugin":"^4.2.3","css-loader":"^0.23.1","elm":"^0.18.0","elm-webpack-loader":"4","file-loader":"^0.9.0","less":"^2.7.1","less-loader":"^2.2.3","oldeploy":"github:horaklukas/oldeploy","style-loader":"^0.13.1","url-loader":"^0.5.7","webpack":"2","webpack-dev-middleware":"^1.6.1","webpack-dev-server":"2"},"dependencies":{"bootstrap":"^3.3.7","json-server":"^0.8.17"}}
+module.exports = {"name":"insights-collector","version":"0.5.0","description":"App for reporting speed and power of web sites using Google insights","main":"index.js","scripts":{"start":"webpack-dev-server --port 3000","build":"NODE_ENV=production webpack","dist":"NODE_ENV=dist webpack","watch":"webpack --watch","test":"echo \"Error: no test specified\" && exit 1","deploy":"oldeploy"},"author":"","license":"MIT","repository":{"type":"git","url":"https://github.com/horaklukas/insights-collector.git"},"devDependencies":{"copy-webpack-plugin":"^4.2.3","css-loader":"^0.23.1","elm":"^0.18.0","elm-webpack-loader":"4","file-loader":"^0.9.0","less":"^2.7.1","less-loader":"^2.2.3","oldeploy":"github:horaklukas/oldeploy","style-loader":"^0.13.1","url-loader":"^0.5.7","webpack":"2","webpack-dev-middleware":"^1.6.1","webpack-dev-server":"2"},"dependencies":{"bootstrap":"^3.3.7"}}
 
 /***/ }),
 /* 16 */

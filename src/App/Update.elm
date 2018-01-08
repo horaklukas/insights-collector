@@ -11,10 +11,7 @@ import WebReport.Models exposing (..)
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
   case msg of
-    Webpages (Err _) ->
-      (model, Cmd.none)
-
-    Webpages (Ok webpages) ->
+    Webpages webpages ->
       let
         (newReports, cmds) = webpages
           |> List.map (initReport model.strategy)

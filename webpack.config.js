@@ -64,9 +64,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin(
       (isDistBuild ? [] : [
-        { from: './src/api/api.php' },
-        { from: './db.json' },
-        { from: './src/api/.htaccess' },
+        { from: './src/db.js' },
       ]).concat([{ from: './src/index.html' }])
     ),
   ],

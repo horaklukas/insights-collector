@@ -8,6 +8,7 @@ var mountNode = document.getElementById('main');
 
 var options = {
   apiUrl: API_URL,
-  appVersion: version
+  appVersion: version,
+  webpages: window.WEBPAGES || []
 }
 var app = Elm.Main.embed(mountNode, options);
