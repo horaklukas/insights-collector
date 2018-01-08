@@ -6,7 +6,6 @@
   "scripts": {
     "start": "webpack-dev-server --port 3000",
     "build": "NODE_ENV=production webpack",
-    "dist": "NODE_ENV=dist webpack",
     "watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "oldeploy"

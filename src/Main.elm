@@ -10,7 +10,6 @@ import App.View exposing (view)
 import WebReport.Models exposing (WebUrl)
 
 type alias Flags = {
-  apiUrl: String,
   appVersion: String,
   webpages: List WebUrl
 }

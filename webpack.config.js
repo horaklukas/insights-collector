@@ -3,7 +3,6 @@ var webpack = require('webpack');
 var path = require('path');
 
 var TARGET_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
-var isDistBuild = TARGET_ENV === 'dist';
 
 console.log('Target environment is', TARGET_ENV);
 
@@ -15,7 +14,7 @@ module.exports = {
   },
 
   output: {
-    path: path.resolve(__dirname + '/' + (isDistBuild ? 'dist' : 'build')),
+    path: path.resolve(__dirname + '/' + 'dist'),
     filename: '[name].js',
   },
 
@@ -59,14 +58,10 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      API_URL: TARGET_ENV === 'production' || isDistBuild ? '"."' : '"http://localhost:4000"'
-    }),
-    new CopyWebpackPlugin(
-      (isDistBuild ? [] : [
+    new CopyWebpackPlugin([
         { from: './src/db.js' },
-      ]).concat([{ from: './src/index.html' }])
-    ),
+        { from: './src/index.html' }
+    ]),
   ],
   devServer: {
     inline: true,
