@@ -4,22 +4,22 @@
   "description": "App for reporting speed and power of web sites using Google insights",
   "main": "index.js",
   "scripts": {
-    "start": "npm run api",
-    "api": "node api.js",
-    "build": "NODE_ENV=production webpack && cp api.php db.json .htaccess dist/",
+    "start": "webpack-dev-server --port 3000",
+    "build": "NODE_ENV=production webpack",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --port 3000",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "oldeploy"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/horaklukas/insights-collector.git"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.2.3",
     "css-loader": "^0.23.1",
+    "elm": "^0.18.0",
     "elm-webpack-loader": "4",
     "file-loader": "^0.9.0",
     "less": "^2.7.1",
@@ -32,7 +32,6 @@
     "webpack-dev-server": "2"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "json-server": "^0.8.17"
+    "bootstrap": "^3.3.7"
   }
 }

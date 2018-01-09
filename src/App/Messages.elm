@@ -6,8 +6,7 @@ import WebReport.Models exposing (ReportId, WebUrl, ReportStrategy)
 import WebReport.Messages as ReportMsg
 
 type AppMsg =
-  Webpages (Result Error (List WebUrl)) |
-  -- FetchReports (Result Error (List WebUrl)) |
+  Webpages (List WebUrl) |
   WebReportMsg ReportId ReportMsg.Msg |
   SelectReport ReportId |
   ChangeStrategy ReportStrategy

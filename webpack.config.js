@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 
@@ -13,7 +14,7 @@ module.exports = {
   },
 
   output: {
-    path: path.resolve(__dirname + '/dist'),
+    path: path.resolve(__dirname + '/' + 'dist'),
     filename: '[name].js',
   },
 
@@ -57,11 +58,11 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      API_URL: TARGET_ENV === 'production' ? '"."' : '"http://localhost:4000"'
-    })
+    new CopyWebpackPlugin([
+        { from: './src/db.js' },
+        { from: './src/index.html' }
+    ]),
   ],
-
   devServer: {
     inline: true,
     stats: { colors: true },

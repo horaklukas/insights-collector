@@ -7,7 +7,6 @@ import Regex exposing (regex, HowMany (..))
 import String exposing (left)
 import Array
 
---import WebReport.Models exposing (..)
 import WebReport.Messages exposing (Msg (..))
 import Rules.Models exposing (RuleId, Rule, FormattedMessage, FormatArg, UrlBlock)
 

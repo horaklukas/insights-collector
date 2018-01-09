@@ -1,17 +1,17 @@
 module Main exposing (..)
 
 import Html exposing (Html)
--- import Html.App as App
+import Task
 
 import App.Models exposing (Model, initialModel)
-import App.Messages exposing (AppMsg)
-import App.Commands exposing (fetchWebpages)
+import App.Messages exposing (AppMsg, AppMsg(..))
 import App.Update exposing (update)
 import App.View exposing (view)
+import WebReport.Models exposing (WebUrl)
 
 type alias Flags = {
-  apiUrl: String,
-  appVersion: String
+  appVersion: String,
+  webpages: List WebUrl
 }
 
   -- INIT
@@ -19,7 +19,7 @@ init : Flags -> ( Model, Cmd AppMsg )
 init flags =
   (
     initialModel flags.appVersion,
-    fetchWebpages flags.apiUrl
+    Task.perform Webpages (Task.succeed flags.webpages)
   )
 
 -- SUBSCRIPTIONS
@@ -28,6 +28,7 @@ subscriptions : Model -> Sub AppMsg
 subscriptions model =
     Sub.none
 
+main: Program Flags Model AppMsg
 main =
   Html.programWithFlags {
     init = init ,
