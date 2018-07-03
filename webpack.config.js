@@ -1,4 +1,5 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 
@@ -15,7 +16,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname + '/' + 'dist'),
-    filename: '[name].js',
+    filename: '[name].[hash].js',
   },
 
   module: {
@@ -60,8 +61,10 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
         { from: './src/db.js' },
-        { from: './src/index.html' }
     ]),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    })
   ],
   devServer: {
     inline: true,
