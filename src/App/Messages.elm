@@ -2,7 +2,7 @@ module App.Messages exposing (AppMsg, AppMsg (..))
 
 import WebReport.Models exposing (ReportId, WebUrl, ReportStrategy)
 import WebReport.Messages as ReportMsg
-import Websites.Update as Websites
+import Websites.Messages as Websites
 
 type AppMsg =
   Webpages (List WebUrl) |
