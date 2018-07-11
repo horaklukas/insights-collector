@@ -9,18 +9,26 @@ import App.Messages exposing (AppMsg (..))
 import WebReport.Views.Tab as ReportTab
 import WebReport.Views.Detail as ReportDetail
 import WebReport.Models exposing (Report, ReportId, Status (Fetching), ReportStrategy(..))
+import Websites.View as WebsitesView
 
-view : Model -> Html AppMsg
+view: Model -> Html AppMsg
 view model =
   div []
     [
       div [] [
-        strategySelect model,
-        websList model,
+        leftPanel model,
         webDetail model
       ],
       div [class "footer"] [text ("v" ++ model.appVersion)]
     ]
+
+leftPanel: Model -> Html AppMsg
+leftPanel model =
+  div [class "left-panel"] [
+    strategySelect model,
+    websList model,
+    Html.map WebsitesMsg (WebsitesView.view model.websites)
+  ]
 
 strategySelect: Model -> Html AppMsg
 strategySelect model =
