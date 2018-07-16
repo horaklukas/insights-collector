@@ -1,6 +1,6 @@
 module App.View exposing (view)
 
-import Html exposing (Html, div, ul, li, button, text, a)
+import Html exposing (Html, div, ul, li, button, text, a, h5)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 
@@ -10,6 +10,7 @@ import WebReport.Views.Tab as ReportTab
 import WebReport.Views.Detail as ReportDetail
 import WebReport.Models exposing (Report, ReportId, Status (Fetching), ReportStrategy(..))
 import Websites.View as WebsitesView
+import Websites.Models as WebsitesModels
 
 view: Model -> Html AppMsg
 view model =
@@ -49,9 +50,20 @@ strategyTab strategy label isActive =
         a [href "#", onClick (ChangeStrategy strategy)][text label]
       ]
 
+isUserDefinedReport: WebsitesModels.Model -> Report -> Bool
+isUserDefinedReport { userWebsites } report =
+  List.member report.id userWebsites
+
 websList: Model -> Html AppMsg
-websList {reports, selected} =
-  ul [class "webs-list"] (List.map (viewReport selected) reports)
+websList {reports, selected, websites} =
+  let
+    (userDefinedReports, staticReports) = List.partition (isUserDefinedReport websites) reports
+  in
+    div [] [
+      ul [class "webs-list"] (List.map (viewReport selected) staticReports),
+      h5 [] [ text "User reports" ],
+      ul [class "webs-list"] (List.map (viewReport selected) userDefinedReports)
+    ]
 
 
 viewReport: ReportId -> Report -> Html AppMsg
