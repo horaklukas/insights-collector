@@ -11,8 +11,8 @@ update msg model =
         { model | inputContent = newContent },
         Cmd.none
       )
-    AddWebsite ->
+    AddWebsite website ->
       ( 
-        { model | inputContent = "", userWebsites = ( model.userWebsites ++ [ model.inputContent ] ) },
+        { model | inputContent = "", userWebsites = ( model.userWebsites ++ [ website ] ) },
         Cmd.none
       )

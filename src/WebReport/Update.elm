@@ -4,6 +4,7 @@ import WebReport.Models exposing (Report, Status (..))
 import WebReport.Messages exposing (Msg (..))
 import WebReport.Commands exposing (getInsightReport, errorMapper)
 
+
 update : Msg -> Report -> (Report, Cmd Msg)
 update action report =
   let

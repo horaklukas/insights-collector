@@ -8,6 +8,7 @@ import WebReport.Messages as ReportMsg
 import WebReport.Update as ReportUpdate
 import WebReport.Models exposing (..)
 import Websites.Update
+import Websites.Messages
 
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
@@ -51,15 +52,26 @@ update msg model =
         else { model | selected = reportId },
         Cmd.none
       )
-    WebsitesMsg subMsg ->
+    WebsitesMsg subMsg -> 
       let
         ( updatedWebsitesModel, widgetCmd ) = Websites.Update.update subMsg model.websites
       in
-        ( 
-          { model | websites = updatedWebsitesModel },
-          Cmd.map WebsitesMsg widgetCmd
-        )
-
+        -- TODO: solve this better, we don't want to repeat ourselfes
+        case subMsg of
+          Websites.Messages.AddWebsite website ->
+            let
+              (newReport, cmd) = initReport model.strategy website
+            in
+              (
+                { model | reports = model.reports ++ [ newReport ], websites = updatedWebsitesModel },
+                cmd
+              )
+              --Cmd.map WebsitesMsg widgetCmd
+          _ ->
+            ( 
+              { model | websites = updatedWebsitesModel },
+              Cmd.map WebsitesMsg widgetCmd
+            )
 
 initReport: ReportStrategy -> WebUrl -> (Report, Cmd AppMsg)
 initReport strategy web =

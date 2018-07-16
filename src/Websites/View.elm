@@ -12,7 +12,7 @@ view model =
   div [] [
     userWebsitesList model.userWebsites,
     input [ placeholder "New website url", value model.inputContent, onInput Change ] [],
-    button [ onClick AddWebsite ] [ text "+" ]
+    button [ onClick (AddWebsite model.inputContent) ] [ text "+" ]
   ]
 
 userWebsitesList: List String -> Html Msg
