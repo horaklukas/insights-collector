@@ -46,12 +46,6 @@ update msg model =
           Cmd.batch cmds
         )
 
-    SelectReport reportId ->
-      (
-        if isReportFetching model.reports reportId then model
-        else { model | selected = reportId },
-        Cmd.none
-      )
     WebsitesMsg subMsg -> 
       let
         ( updatedWebsitesModel, widgetCmd ) = Websites.Update.update subMsg model.websites
@@ -66,7 +60,20 @@ update msg model =
                 { model | reports = model.reports ++ [ newReport ], websites = updatedWebsitesModel },
                 cmd
               )
-              --Cmd.map WebsitesMsg widgetCmd
+          Websites.Messages.SelectWebsite reportId ->
+            (
+              if isReportFetching model.reports reportId then model
+              else { model | selected = reportId },
+              Cmd.none
+            )
+          Websites.Messages.RemoveWebsite reportId ->
+            --let
+            --  (newReport, cmd) = initReport model.strategy website
+            --in
+              (
+                model,
+                Cmd.none
+              ) 
           _ ->
             ( 
               { model | websites = updatedWebsitesModel },

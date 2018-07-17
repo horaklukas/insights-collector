@@ -7,6 +7,5 @@ import Websites.Messages as Websites
 type AppMsg =
   Webpages (List WebUrl) |
   WebReportMsg ReportId ReportMsg.Msg |
-  SelectReport ReportId |
   ChangeStrategy ReportStrategy |
   WebsitesMsg Websites.Msg

@@ -16,3 +16,7 @@ update msg model =
         { model | inputContent = "", userWebsites = ( model.userWebsites ++ [ website ] ) },
         Cmd.none
       )
+    RemoveWebsite website ->
+      ( model, Cmd.none )
+    _ ->
+      ( model, Cmd.none )
