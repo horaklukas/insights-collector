@@ -67,11 +67,8 @@ update msg model =
               Cmd.none
             )
           Websites.Messages.RemoveWebsite reportId ->
-            --let
-            --  (newReport, cmd) = initReport model.strategy website
-            --in
               (
-                model,
+                { model | reports = ( List.filter (\r -> r.id /= reportId) model.reports ) },
                 Cmd.none
               ) 
           _ ->

@@ -2,7 +2,8 @@ module Websites.View exposing(view, websList)
 
 import Html exposing (Html, div, input, text, button, li, ul, span)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput, onClick)
+import Html.Events exposing (onInput, onClick, onWithOptions)
+import Json.Decode as Decode
 
 import WebReport.Models exposing (Report, ReportId, Status (Fetching))
 import WebReport.Views.Tab as ReportTab
@@ -42,7 +43,7 @@ deleteButton report websites =
       class "remove-website btn btn-default btn-xs",
       title "Remove website",
       disabled (report.status == Fetching),
-      onClick (RemoveWebsite report.id)
+      onWithOptions "click" { stopPropagation = True, preventDefault = True } ( Decode.succeed (RemoveWebsite report.id) )
     ] [ 
       span [ class "glyphicon glyphicon-trash" ] []
     ]

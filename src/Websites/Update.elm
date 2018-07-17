@@ -17,6 +17,9 @@ update msg model =
         Cmd.none
       )
     RemoveWebsite website ->
-      ( model, Cmd.none )
+      (
+        { model | userWebsites = ( List.filter (\w -> w /= website) model.userWebsites ) },
+        Cmd.none
+      )
     _ ->
       ( model, Cmd.none )
