@@ -47,17 +47,19 @@ update msg model storage =
     AddWebsite website ->
       let
         newUserWebsites = model.userWebsites ++ [ website ]
-        encodedWebsites = encodeWebsitesList newUserWebsites
       in      
         (
           { model | inputContent = "", userWebsites = newUserWebsites },
-          Cmd.map StorageMsg (setItem storage userWebsitesKey encodedWebsites)
+          Cmd.map StorageMsg (setItem storage userWebsitesKey (encodeWebsitesList newUserWebsites))
         )
     RemoveWebsite website ->
-      (
-        { model | userWebsites = ( List.filter (\w -> w /= website) model.userWebsites ) },
-        Cmd.none
-      )
+      let
+        newUserWebsites = List.filter (\w -> w /= website) model.userWebsites
+      in        
+        (
+          { model | userWebsites = newUserWebsites },
+          Cmd.map StorageMsg (setItem storage userWebsitesKey (encodeWebsitesList newUserWebsites))
+        )
     StorageMsg subMsg ->
       case subMsg of
         Storage.UpdatePorts operation ports key value ->
