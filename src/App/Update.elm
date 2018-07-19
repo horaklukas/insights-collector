@@ -45,10 +45,11 @@ update msg model =
           { model | strategy = strategy,  reports = newReports },
           Cmd.batch cmds
         )
-
+  
     WebsitesMsg subMsg -> 
       let
-        ( updatedWebsitesModel, widgetCmd ) = Websites.Update.update subMsg model.websites
+        ( updatedWebsitesModel, cmd ) = Websites.Update.update subMsg model.websites model.storage
+        websitesCmd = Cmd.map WebsitesMsg cmd
       in
         -- TODO: solve this better, we don't want to repeat ourselfes
         case subMsg of
@@ -58,24 +59,28 @@ update msg model =
             in
               (
                 { model | reports = model.reports ++ [ newReport ], websites = updatedWebsitesModel },
-                cmd
+                Cmd.batch [ cmd, websitesCmd ]
               )
           Websites.Messages.SelectWebsite reportId ->
             (
               if isReportFetching model.reports reportId then model
               else { model | selected = reportId },
-              Cmd.none
+              websitesCmd
             )
           Websites.Messages.RemoveWebsite reportId ->
               (
                 { model | reports = ( List.filter (\r -> r.id /= reportId) model.reports ) },
-                Cmd.none
+                websitesCmd
               ) 
           _ ->
             ( 
               { model | websites = updatedWebsitesModel },
-              Cmd.map WebsitesMsg widgetCmd
+              websitesCmd
             )
+    _ ->
+      ( model, Cmd.none )
+
+
 
 initReport: ReportStrategy -> WebUrl -> (Report, Cmd AppMsg)
 initReport strategy web =

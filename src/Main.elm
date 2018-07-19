@@ -1,5 +1,8 @@
 module Main exposing (..)
 
+import LocalStorage
+import LocalStorage.SharedTypes exposing(receiveWrapper)
+
 import Html exposing (Html)
 import Task
 
@@ -8,6 +11,8 @@ import App.Messages exposing (AppMsg, AppMsg(..))
 import App.Update exposing (update)
 import App.View exposing (view)
 import WebReport.Models exposing (WebUrl)
+import Storage.Main exposing (..)
+import Storage.Messages exposing (Msg(UpdatePorts))
 
 type alias Flags = {
   appVersion: String,
@@ -26,7 +31,10 @@ init flags =
 
 subscriptions : Model -> Sub AppMsg
 subscriptions model =
-    Sub.none
+    let
+      prefix = LocalStorage.getPrefix model.storage
+    in
+      Sub.map AppStorageMsg (receiveItem <| receiveWrapper UpdatePorts prefix)
 
 main: Program Flags Model AppMsg
 main =

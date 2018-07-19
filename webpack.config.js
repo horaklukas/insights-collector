@@ -65,6 +65,7 @@ var commonConfig = {
         }),
         new CopyWebpackPlugin([
             { from: './src/db.js' },
+            { from: './elm-stuff/packages/billstclair/elm-localstorage/4.0.2/site/js/ElmLocalStoragePorts.js' },
         ]),
     ]
 }
