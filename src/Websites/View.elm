@@ -12,9 +12,9 @@ import Websites.Messages exposing (..)
 
 view: Model -> Html Msg
 view model =
-  div [] [
-    input [ placeholder "New website url", value model.inputContent, onInput Change ] [],
-    button [ onClick (AddWebsite model.inputContent) ] [ text "+" ]
+  div [ class "form-inline" ] [
+    input [ class "form-control", placeholder "New website url", value model.inputContent, onInput Change ] [],
+    button [ class "btn btn-default btn-success", onClick (AddWebsite model.inputContent) ] [ text "+" ]
   ]
 
 websList: List Report -> ReportId -> Model -> Html Msg
