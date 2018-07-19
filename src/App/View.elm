@@ -35,7 +35,7 @@ leftPanel model =
     div [class "left-panel"] [
       strategySelect model,
       Html.map WebsitesMsg (WebsitesView.websList staticReports selected websites),
-      h5 [] [ text "User reports" ],
+      h5 [] [ text "Custom websites" ],
       Html.map WebsitesMsg (WebsitesView.websList userDefinedReports selected websites),
       Html.map WebsitesMsg (WebsitesView.view websites)
     ]
