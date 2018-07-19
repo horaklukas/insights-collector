@@ -5,11 +5,11 @@ import WebReport.Messages as WebReportMsgs
 
 import Storage.Messages as Storage
 
-type Msg = 
-    Change String |
-    AddWebsite String |
-    SelectWebsite ReportId |
-    RemoveWebsite ReportId |
-    TabMsg WebReportMsgs.Msg |
-    StorageMsg Storage.Msg
+type Msg = Change String
+    | AddWebsite String
+    | SelectWebsite ReportId
+    | RemoveWebsite ReportId
+    | TabMsg WebReportMsgs.Msg
+    | StorageMsg Storage.Msg
+    | LoadUserWebsites
     

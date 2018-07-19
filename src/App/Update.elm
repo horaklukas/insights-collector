@@ -9,6 +9,7 @@ import WebReport.Update as ReportUpdate
 import WebReport.Models exposing (..)
 import Websites.Update
 import Websites.Messages
+import Storage.Messages as Storage
 
 update : AppMsg -> Model -> (Model, Cmd AppMsg)
 update msg model =
@@ -51,16 +52,10 @@ update msg model =
         ( updatedWebsitesModel, cmd ) = Websites.Update.update subMsg model.websites model.storage
         websitesCmd = Cmd.map WebsitesMsg cmd
       in
-        -- TODO: solve this better, we don't want to repeat ourselfes
         case subMsg of
           Websites.Messages.AddWebsite website ->
-            let
-              (newReport, cmd) = initReport model.strategy website
-            in
-              (
-                { model | reports = model.reports ++ [ newReport ], websites = updatedWebsitesModel },
-                Cmd.batch [ cmd, websitesCmd ]
-              )
+            addWebsites [ website ] { model | websites = updatedWebsitesModel } websitesCmd
+
           Websites.Messages.SelectWebsite reportId ->
             (
               if isReportFetching model.reports reportId then model
@@ -77,10 +72,31 @@ update msg model =
               { model | websites = updatedWebsitesModel },
               websitesCmd
             )
-    _ ->
-      ( model, Cmd.none )
+    AppStorageMsg subMsg ->
+      case subMsg of
+        Storage.UpdatePorts operation ports key value ->
+          let
+            ( websitesModel, cmd ) = Websites.Update.update (Websites.Messages.StorageMsg subMsg) model.websites model.storage
+            websitesCmd = Cmd.map WebsitesMsg cmd
+          in
+            if Websites.Update.isLoadingWebsitesListOperation operation key then
+                addWebsites websitesModel.userWebsites { model | websites = websitesModel } websitesCmd
+            else
+              ( { model | websites = websitesModel }, websitesCmd )
+        _ ->
+          ( model, Cmd.none )
 
-
+addWebsites: List String -> Model -> Cmd AppMsg -> (Model, Cmd AppMsg)
+addWebsites websites model websitesCmd =
+  let
+    (newReports, cmds) = websites
+      |> List.map (initReport model.strategy)
+      |> List.unzip
+  in
+    (
+      { model | reports = model.reports ++ newReports },
+      Cmd.batch (cmds ++ [ websitesCmd ] )
+    )
 
 initReport: ReportStrategy -> WebUrl -> (Report, Cmd AppMsg)
 initReport strategy web =
