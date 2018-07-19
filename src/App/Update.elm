@@ -64,7 +64,7 @@ update msg model =
             )
           Websites.Messages.RemoveWebsite reportId ->
               (
-                { model | reports = ( List.filter (\r -> r.id /= reportId) model.reports ) },
+                { model | reports = ( List.filter (\r -> r.id /= reportId) model.reports ), websites = updatedWebsitesModel },
                 websitesCmd
               ) 
           _ ->
