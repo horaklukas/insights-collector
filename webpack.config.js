@@ -113,10 +113,10 @@ if (isProd === true) {
                 exclude: [/elm-stuff/, /node_modules/],
                 use: 'elm-webpack-loader'
             }, {
-                test: /\.sc?ss$/,
+                test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'postcss-loader', 'sass-loader']
+                    use: ['css-loader', 'postcss-loader', 'less-loader']
                 })
             }]
         },
@@ -125,12 +125,12 @@ if (isProd === true) {
                 filename: 'css/[name]-[hash].css',
                 allChunks: true,
             }),
-            new CopyWebpackPlugin([{
+            /* new CopyWebpackPlugin([{
                 from: 'src/img/',
                 to: 'img/'
             }, {
                 from: 'src/favicon.ico'
-            }]),
+            }]),*/
 
             // extract CSS into a separate file
             // minify & mangle JS/CSS
@@ -138,8 +138,8 @@ if (isProd === true) {
                 minimize: true,
                 compressor: {
                     warnings: false
-                }
-                // mangle:  true
+                },
+                mangle:  true
             })
         ]
     });
