@@ -1,6 +1,7 @@
 .webs-list {
     .list-group;
     width: @list-width;
+    margin-bottom: 5px;
   
     .list-group-item {
         padding-top: @list-item-vertical-padding;
@@ -11,10 +12,6 @@
         &.active {
             border-color: @active-item-border-color;
             background-color: @active-item-bg-color;
-        }
-
-        &:first-child {
-            border-top: 0;
         }
     
         .score {
@@ -91,5 +88,25 @@
         .high .score {
             background-color: @brand-success;
         }
+
+        &.removable {
+            padding-left: @remove-button-width + @list-item-horizontal-padding;
+        }
+    }
+
+    &:first-child {
+        .list-group-item {
+            &:first-child {
+                border-top: 0;
+            }
+        }
+    }
+
+    .remove-website {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: @remove-button-width;
     }
 }

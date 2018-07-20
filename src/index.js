@@ -11,3 +11,5 @@ var options = {
   webpages: window.WEBPAGES || []
 }
 var app = Elm.Main.embed(mountNode, options);
+
+ElmLocalStoragePorts.subscribe(app)

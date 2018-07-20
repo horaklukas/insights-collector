@@ -1,25 +1,43 @@
 module App.View exposing (view)
 
-import Html exposing (Html, div, ul, li, button, text, a)
+import Html exposing (Html, div, ul, li, button, text, a, h5)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 
 import App.Models exposing (Model)
 import App.Messages exposing (AppMsg (..))
-import WebReport.Views.Tab as ReportTab
 import WebReport.Views.Detail as ReportDetail
 import WebReport.Models exposing (Report, ReportId, Status (Fetching), ReportStrategy(..))
+import Websites.View as WebsitesView
+import Websites.Models as WebsitesModels
 
-view : Model -> Html AppMsg
+view: Model -> Html AppMsg
 view model =
   div []
     [
       div [] [
-        strategySelect model,
-        websList model,
+        leftPanel model,
         webDetail model
       ],
       div [class "footer"] [text ("v" ++ model.appVersion)]
+    ]
+
+isUserDefinedReport: WebsitesModels.Model -> Report -> Bool
+isUserDefinedReport { userWebsites } report =
+  List.member report.id userWebsites
+
+leftPanel: Model -> Html AppMsg
+leftPanel model =
+  let
+    { reports, websites, selected } = model
+    (userDefinedReports, staticReports) = List.partition (isUserDefinedReport websites) reports
+  in
+    div [class "left-panel"] [
+      strategySelect model,
+      Html.map WebsitesMsg (WebsitesView.websList staticReports selected websites),
+      h5 [] [ text "Custom websites" ],
+      Html.map WebsitesMsg (WebsitesView.websList userDefinedReports selected websites),
+      Html.map WebsitesMsg (WebsitesView.view websites)
     ]
 
 strategySelect: Model -> Html AppMsg
@@ -40,24 +58,6 @@ strategyTab strategy label isActive =
       li [tabClasses][
         a [href "#", onClick (ChangeStrategy strategy)][text label]
       ]
-
-websList: Model -> Html AppMsg
-websList {reports, selected} =
-  ul [class "webs-list"] (List.map (viewReport selected) reports)
-
-
-viewReport: ReportId -> Report -> Html AppMsg
-viewReport selectedId model =
-  let
-    itemClasses = classList [
-      ("list-group-item", True),
-      ("active", selectedId == model.id),
-      ("disabled", model.status == Fetching)
-    ]
-  in
-    li [itemClasses, onClick (SelectReport model.id)] [
-      Html.map (WebReportMsg model.id) (ReportTab.view model)
-    ]
 
 webDetail: Model -> Html AppMsg
 webDetail {reports, selected, strategy} =

@@ -16,8 +16,6 @@ getInsightReport website strategy =
   in
     Http.send Insight (Http.get url decodeReport)
 
-
-
 decodeReport: Json.Decoder ReportData
 decodeReport =
   map4 ReportData
