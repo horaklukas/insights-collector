@@ -1,4 +1,4 @@
-module Rules.Rule exposing (view)
+module Rules.Rule exposing (view, hasImpact)
 
 import Html exposing (Html, div, p, text, h4, span, a, em)
 import Html.Attributes exposing (class, href)
@@ -28,15 +28,16 @@ view activeRule (id, rule) =
       ]
     ]
 
+hasImpact: Float -> Bool
+hasImpact impact =
+  (round impact) > 0
+
 ruleImpact: Float -> Html Msg
 ruleImpact impact =
-  let
-    intImpact = round impact
-  in
-    if intImpact > 0 then
-      span [class "badge"] [text <| toString <| intImpact]
-    else
-      span [class "glyphicon glyphicon-ok-circle"] []
+  if hasImpact impact then
+    span [class "badge"] [text <| toString <| (round impact)]
+  else
+    span [class "glyphicon glyphicon-ok-circle"] []
 
 ruleSummary: Rule -> Html Msg
 ruleSummary rule =
