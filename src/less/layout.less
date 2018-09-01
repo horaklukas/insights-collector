@@ -1,0 +1,26 @@
+html,
+body,
+#main,
+#main > .container-fluid {
+  height: 100%;
+}
+
+.content {
+  min-height: 100%;
+  margin-bottom: -1 * @footer-height;
+}
+
+.content-push {
+  height: @footer-height;
+}
+
+.footer {
+    width: 100%;
+    height: @footer-height;
+
+    padding: 5px;
+  
+    background-color: rgb(245, 245, 245);
+
+    text-align: center;
+  }

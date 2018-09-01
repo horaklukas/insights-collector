@@ -13,13 +13,16 @@ import Websites.Models as WebsitesModels
 
 view: Model -> Html AppMsg
 view model =
-  div []
+  div [class "container-fluid"]
     [
-      div [] [
+      div [class "content row"] [
         leftPanel model,
-        webDetail model
+        webDetail model,
+        div [class "content-push col-xs-12"] []
       ],
-      div [class "footer"] [text ("v" ++ model.appVersion)]
+      div [class "footer row"] [
+        div [class "col-xs-12"] [ text ("v" ++ model.appVersion) ]
+      ]
     ]
 
 isUserDefinedReport: WebsitesModels.Model -> Report -> Bool
@@ -32,7 +35,7 @@ leftPanel model =
     { reports, websites, selected } = model
     (userDefinedReports, staticReports) = List.partition (isUserDefinedReport websites) reports
   in
-    div [class "left-panel"] [
+    div [class "left-panel col-sm-5 col-md-4 col-lg-3"] [
       strategySelect model,
       Html.map WebsitesMsg (WebsitesView.websList staticReports selected websites),
       h5 [] [ text "Custom websites" ],
@@ -72,4 +75,4 @@ webDetail {reports, selected, strategy} =
         Html.map (WebReportMsg report.id) (ReportDetail.view report strategy)
 
       Nothing ->
-        div [] []
+        div [class "col-sm-7 col-md-8 col-lg-9"] []

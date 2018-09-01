@@ -12,7 +12,7 @@ import Rules.View
 
 view: Report -> ReportStrategy -> Html Msg
 view report strategy =
-  div [class <| "detail panel " ++ getStrategyName strategy] [
+  div [class <| "detail col-sm-7 col-md-8 col-lg-9 panel " ++ getStrategyName strategy] [
     div [class "panel-body grid"] [
       div [class "row"] [
         div [class "col-md-6"] [ScreenshotView.view report.data.screenshot],
