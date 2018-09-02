@@ -91,7 +91,7 @@
         color: black;
 
         .panel-heading {
-          cursor: default;
+          cursor: pointer;
           background-color: @gray-light;
           color: white;
           border-color: @gray;
@@ -135,6 +135,35 @@
         .glyphicon-ok-circle {
           color: @brand-success;
         }
+      }
+
+      &--complete {
+        .panel-heading {
+          padding: 5px 15px;
+          opacity: 0.8;
+        }
+
+        .panel-title {
+          font-size: 14px;
+        }
+      }
+    }
+
+    &-separator {
+      text-align: center;
+      position: relative;
+
+      hr {
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+
+      h4 {
+        display: inline-block;
+        position: relative;
+        background: #FFFFFF;
+        padding: 0 15px;
       }
     }
   }

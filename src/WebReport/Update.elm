@@ -21,4 +21,7 @@ update action report =
         ({ report | data = data, status = (Error (errorMapper err)) }, Cmd.none)
 
       SelectRule ruleId ->
-        ({ report | activeRule = ruleId }, Cmd.none)
+        let
+          nextActiveRule = if activeRule == ruleId then "" else ruleId
+        in
+          ({ report | activeRule = nextActiveRule }, Cmd.none)
