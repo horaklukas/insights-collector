@@ -1,7 +1,7 @@
 module Rules.Rule exposing (view, hasImpact)
 
 import Html exposing (Html, div, p, text, h4, span, a, em)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 import Regex exposing (regex, HowMany (..))
 import String exposing (left)
@@ -13,9 +13,16 @@ import Rules.Models exposing (RuleId, Rule, FormattedMessage, FormatArg, UrlBloc
 view: RuleId -> (RuleId, Rule) -> Html Msg
 view activeRule (id, rule) =
   let
-    activeClass = if activeRule == id then " expanded" else " collapsed"
+    isActive = activeRule == id
+    ruleClassList = [
+      ("panel panel-default", True),
+      ("rule", True),
+      ("rule--complete", not (hasImpact rule.impact)),
+      ("expanded", isActive),
+      ("collapsed", not isActive)
+    ]
   in
-    div [class ("panel panel-default rule" ++ activeClass), onClick (SelectRule id)] [
+    div [classList ruleClassList, onClick (SelectRule id)] [
       div [class "panel-heading"] [
         h4 [class "panel-title"] [
           ruleImpact rule.impact,
